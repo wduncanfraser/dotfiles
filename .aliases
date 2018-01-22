@@ -1,0 +1,29 @@
+# Safe actions
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+# Colorize output
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# QoL command shell aliases
+alias cl=clear
+alias ll="ls -lah"
+alias vi=nvim
+alias vim=nvim
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias dev="cd ~/dev"
+
+# Start Simple Server
+alias serve="python -m SimpleHTTPServer"
+
+# IP addresses
+alias remoteip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias wip="ip addr show label 'wlp*' | grep 'inet' | grep -v 'inet6' | awk '{print $2}'"
+alias eip="ip addr show label 'enp*' | grep 'inet' | grep -v 'inet6' | awk '{print $2}'"
