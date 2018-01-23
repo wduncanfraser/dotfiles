@@ -20,7 +20,6 @@ update: ## Fetch changes for this repo
 	git pull origin master
 
 install: update deploy ## Run make update, deploy
-	@exec $$SHELL
 
 clean: ## Remove the dot files and this repo
 	@echo 'Remove dot files in your home directory...'
