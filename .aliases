@@ -14,11 +14,14 @@ alias cl=clear
 alias ll="ls -lah"
 alias vi=nvim
 alias vim=nvim
+alias ack=ag
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias dev="cd ~/dev"
+
+alias jsonread="chef exec ruby -e 'p ARGF.read'"
 
 # Start Simple Server
 alias serve="python -m SimpleHTTPServer"

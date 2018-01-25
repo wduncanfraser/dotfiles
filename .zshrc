@@ -94,7 +94,7 @@ zplug "tj/git-extras", use:"etc/git-extras-completion.zsh", defer:3, if:"[[ $(co
 
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zdharma/fast-syntax-highlighting", defer:2
 
 # Prompt Theme
 zplug "mafredri/zsh-async", from:github

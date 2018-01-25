@@ -18,7 +18,8 @@ sudo apt install -y \
 
 # Shell/ZSH Setup
 sudo apt install -y \
-  zsh
+  zsh \
+  silversearcher-ag
 
 # NeoVim Setup
 sudo apt install -y \
