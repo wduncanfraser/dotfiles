@@ -20,6 +20,8 @@ sudo apt install -y \
 # i3 environment
 sudo apt install -y \
   i3 \
+  i3blocks \
+  comtpon \
   network-manager-gnome \
   pulseaudio \
   pavucontrol \
@@ -42,6 +44,10 @@ sudo apt install -y \
   fonts-powerline \
   fonts-hack-ttf \
   fonts-hack-web
+
+# Graphics Editing
+sudo apt install -y \
+  gimp
 
 # Git Setup
 sudo apt install -y \
@@ -78,5 +84,12 @@ sudo apt install -y \
 # Slack
 wget https://downloads.slack-edge.com/linux_releases/slack-desktop-3.0.5-amd64.deb
 sudo apt install -y ./slack-desktop-3.0.5-amd64.deb
+
+# Steam
+wget https://steamcdn-a.akamaihd.net/client/installer/steam.deb
+sudo apt install -y ./steam.deb
+
+#dpkg --add-architecture i386
+sudo apt install -y install libgl1-nvidia-glx:i386
 
 popd

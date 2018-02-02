@@ -15,7 +15,7 @@ floating_modifier $mod
 bindsym $mod+Return exec --no-startup-id urxvt
 
 # Rofi instead of dmenu
-bindsym $mod+space exec --no-startup-id rofi -show combi
+bindsym $mod+space exec rofi -show combi
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -90,9 +90,16 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
+#increase sound volume
+bindsym XF86AudioRaiseVolume exec "pactl set-sink-volume 0 +5%; pkill -RTMIN+1 i3blocks"
+#decrease sound volume
+bindsym XF86AudioLowerVolume exec "pactl set-sink-volume 0 -5%; pkill -RTMIN+1 i3blocks"
+# mute sound
+bindsym XF86AudioMute exec "pactl set-sink-mute 0 toggle; pkill -RTMIN+1 i3blocks"
+
+# Indicators
+bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
 
 # Screenshots
 # Fullscreen
@@ -134,15 +141,22 @@ bindsym $mod+r mode "resize"
 bar {
         position top
         font pango:Hack 10
-        status_command i3status
+        status_command i3blocks
 }
 
 # Window settings
 # for_window [class="Slack"] floating enable
+for_window [class="Steam"] floating enable
 
 # Auto Run
 # set background
-exec --no-startup-id feh --bg-fill ${HOME}/Pictures/Wallpapers/falcon-9-rocket-3840x2160-spacex-cape-canaveral-4k-6186.png
+exec_always --no-startup-id feh --bg-fill ${HOME}/Pictures/Wallpapers/falcon-9-rocket-3840x2160-spacex-cape-canaveral-4k-6186.png
 
 # Notifications
 exec --no-startup-id dunst
+
+#compton - just the debian defaults for now. No Tearing! yay!
+exec_always --no-startup-id compton -b
+
+# Open a terminal
+exec --no-startup-id urxvt
