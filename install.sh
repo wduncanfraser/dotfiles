@@ -15,6 +15,7 @@ sudo apt install -y \
 sudo apt install -y \
   xorg \
   xserver-xorg \
+  argyll \
   nvidia-driver # TODO: Make this system generic
 
 # i3 environment
@@ -37,7 +38,8 @@ sudo apt install -y \
   htop \
   wget \
   imagemagick \
-  libnotify-bin
+  libnotify-bin \
+  unrar
 
 # Fonts
 sudo apt install -y \
@@ -48,6 +50,10 @@ sudo apt install -y \
 # Graphics Editing
 sudo apt install -y \
   gimp
+
+# GPG Setup
+sudo apt install -y \
+  gnupg
 
 # Git Setup
 sudo apt install -y \
