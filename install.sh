@@ -29,7 +29,10 @@ sudo apt install -y \
   feh \
   rofi \
   scrot \
-  rxvt-unicode-256color
+  rxvt-unicode-256color \
+  ranger \
+  adwaita-icon-theme \
+  gnome-themes-standard
 
 # Utils
 sudo apt install -y \
