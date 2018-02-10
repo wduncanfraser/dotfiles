@@ -3,8 +3,14 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 
+if dircolors > /dev/null 2>&1; then # gnu system
+  colorflag="--color"
+else # OS X
+  colorflag="-G"
+fi
+
 # Colorize output
-alias ls='ls --color=auto'
+alias ls='ls ${colorflag}'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
