@@ -194,7 +194,6 @@ install_wm() {
     brightness-udev \
     brightnessctl \
     clipman \
-    dunst \
     fonts-font-awesome \
     fonts-hack \
     fonts-liberation2 \
@@ -208,9 +207,11 @@ install_wm() {
     imv \
     libgtk-3-bin \
     libnotify-bin \
+    mako-notifier \
     mpv \
     neofetch \
     network-manager \
+    pinentry-gnome3 \
     pulseaudio \
     pulseaudio-module-bluetooth \
     pulsemixer \
