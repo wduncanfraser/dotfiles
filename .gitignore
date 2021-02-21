@@ -1,5 +1,7 @@
 *~
 
+fish_variables
+
 .gitconfig
 .gnupg
 !.gnupg/gpg*.conf
