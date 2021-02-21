@@ -1,6 +1,7 @@
 #include "/usr/share/rofi/themes/gruvbox-dark-hard.theme"
 
-rofi.modi: combi,ssh,window
-rofi.combi-modi: run,drun
+#rofi.modi: combi,ssh,window
+#rofi.combi-modi: run,drun
+rofi.theme: gruvbox-dark-hard
 rofi.font: Hack 12
 rofi.separator-style: none
