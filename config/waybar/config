@@ -1,0 +1,77 @@
+{
+    "layer": "top",
+    "height": 24,
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": [],
+    "modules-right": ["tray", "temperature", "disk", "memory", "cpu", "network", "backlight", "pulseaudio", "battery", "custom/weather", "custom/clock"],
+    "tray": {
+        "icon-size": 22,
+        "spacing": 10
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", ""]
+    },
+    "battery": {
+        "format": "{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""],
+	"states": {
+            "warning": 30,
+            "critical": 15
+        },
+    },
+    "cpu": {
+        "format": "{usage}% "
+    },
+    "custom/clock": {
+        "exec": "date '+%Y-%m-%d %H:%M:%S'",
+	"format": "{}",
+        "interval": 1
+    },
+    "custom/weather": {
+        "exec": "curl 'https://wttr.in/Chicago?format=1'",
+	"format": "{}",
+        "interval": 600
+    },
+    "disk": {
+        "format": "{free} ",
+        "path": "/home"
+    },
+    "memory": {
+        "format": "{}% "
+    },
+    "network": {
+        "format": "{ifname}",
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ifname} ",
+        "format-disconnected": "", //An empty format will hide the module.
+        "tooltip-format": "{ifname}: {ipaddr}",
+        "tooltip-format-wifi": "{essid}: {ipaddr}",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}",
+        "tooltip-format-disconnected": "Disconnected",
+        "max-length": 50
+    },
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", ""]
+        },
+        "scroll-step": 1
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "critical-threshold": 80,
+        "format-critical": "{temperatureC}°C ",
+	"format": "{temperatureC}°C "
+    }
+}
