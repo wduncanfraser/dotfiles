@@ -80,6 +80,9 @@ bindsym $mod+Print exec grimshot --notify save area "${HOME}/screenshots/$(date 
 # Current Window
 bindsym Shift+Print exec grimshot --notify save active "${HOME}/screenshots/$(date +'%Y-%m-%d_%H:%M:%S%Z.png')"
 
+# Media
+bindsym XF86AudioPlay exec playerctl play-pause
+
 # Lock Screen
 bindsym $mod+Control+l exec $lock
 
