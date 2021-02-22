@@ -54,7 +54,9 @@ exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.local/
 ### Input configuration
 input "1739:52710:DLL0945:00_06CB:CDE6_Touchpad" {
     dwt enabled
-    tap disabled
+    tap enabled
+    tap_button_map lrm
+    scroll_method two_finger
     natural_scroll enabled
     middle_emulation disabled
 }
