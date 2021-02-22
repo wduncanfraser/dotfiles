@@ -339,8 +339,18 @@ install_vscode() {
     --no-install-recommends
 }
 
+install_nvim() {
+  sudo apt update || true
+  sudo apt install -y \
+    neovim \
+    --no-install-recommends
+
+  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+}
+
 usage() {
-  echo -e "install.sh\\n\\tThis script installs my basic setup for a debian laptop\\n"
+  echo -e "install.sh\\n  This script installs my basic setup for a debian laptop, wsl, or vm\\n"
   echo "Usage:"
   echo "  base                                - setup sources & install base pkgs used in all setups"
   echo "  physical {amd, intel}               - setup firmware, etc. Things we need on a physical machine, but not VM/WSL"
@@ -352,6 +362,7 @@ usage() {
   echo "  node                                - install node"
   echo "  firefox                             - install firefox current from tar"
   echo "  vscode                              - install vscode"
+  echo "  nvim                                - install nvim and config"
 }
 
 main() {
@@ -398,10 +409,13 @@ main() {
     "vscode")
       install_vscode
       ;;
+    "nvim")
+      install_nvim
+      ;;
     *)
       usage
-			;;
-	esac
+      ;;
+    esac
 }
 
 main "$@"
