@@ -58,9 +58,13 @@ bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -R
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 
-# Key Indicators
-bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
-bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
+# Screenshots
+# Fullscreen
+bindsym Print exec grimshot --notify save screen "${HOME}/screenshots/$(date +'%Y-%m-%d_%H:%M:%S%Z.png')"
+# With selection
+bindsym $mod+Print exec grimshot --notify save area "${HOME}/screenshots/$(date +'%Y-%m-%d_%H:%M:%S%Z.png')"
+# Current Window
+bindsym Shift+Print exec grimshot --notify save active "${HOME}/screenshots/$(date +'%Y-%m-%d_%H:%M:%S%Z.png')"
 
 # Lock Screen
 bindsym $mod+Control+l exec $lock

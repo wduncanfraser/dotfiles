@@ -11,6 +11,7 @@ if status --is-interactive
     abbr -a -g ... cd ../..
     abbr -a -g .... cd ../../..
     abbr -a -g dev cd ~/dev
+    abbr -a -g imv imv-wayland
 
     # IP Addresses
     abbr -a -g remoteip dig +short myip.opendns.com @resolver1.opendns.com
