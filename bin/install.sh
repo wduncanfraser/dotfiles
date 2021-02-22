@@ -212,6 +212,7 @@ install_wm() {
     neofetch \
     network-manager \
     pinentry-gnome3 \
+    poppler-data \
     pulseaudio \
     pulseaudio-module-bluetooth \
     pulsemixer \
@@ -219,6 +220,7 @@ install_wm() {
     waybar \
     wl-clipboard \
     xdg-utils \
+    zathura \
     --no-install-recommends
 
   # start and enable pulseaudio
