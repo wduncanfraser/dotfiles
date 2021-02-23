@@ -16,7 +16,7 @@
     "battery": {
         "format": "{capacity}% {icon}",
         "format-icons": ["", "", "", "", ""],
-	"states": {
+        "states": {
             "warning": 30,
             "critical": 15
         },
@@ -26,12 +26,12 @@
     },
     "custom/clock": {
         "exec": "date '+%Y-%m-%d %H:%M:%S'",
-	"format": "{}",
+        "format": "{}",
         "interval": 1
     },
     "custom/weather": {
         "exec": "curl 'https://wttr.in/Chicago?format=1'",
-	"format": "{}",
+	      "format": "{}",
         "interval": 600
     },
     "disk": {
@@ -58,8 +58,8 @@
         "format-muted": "",
         "format-icons": {
             "headphone": "",
-            "hands-free": "",
-            "headset": "",
+            "hands-free": "",
+            "headset": "",
             "phone": "",
             "portable": "",
             "car": "",
@@ -72,6 +72,6 @@
         "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
         "critical-threshold": 80,
         "format-critical": "{temperatureC}°C ",
-	"format": "{temperatureC}°C "
+	      "format": "{temperatureC}°C "
     }
 }

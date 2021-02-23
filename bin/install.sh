@@ -199,8 +199,8 @@ install_wm() {
     fonts-liberation2 \
     fonts-lmodern \
     fonts-noto-color-emoji \
-    fonts-powerline \
     fonts-stix \
+    fonts-symbola \
     foot \
     gnome-themes-standard \
     grimshot \
@@ -212,12 +212,14 @@ install_wm() {
     neofetch \
     network-manager \
     pinentry-gnome3 \
+    playerctl \
     poppler-data \
     pulseaudio \
     pulseaudio-module-bluetooth \
     pulsemixer \
     rofi \
     waybar \
+    wev \
     wl-clipboard \
     xdg-utils \
     zathura \

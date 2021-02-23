@@ -12,3 +12,4 @@ ln -sfnv "${PWD}/config/rofi" "${HOME}/.config/rofi"
 ln -sfnv "${PWD}/config/sway" "${HOME}/.config/sway"
 ln -sfnv "${PWD}/config/waybar" "${HOME}/.config/waybar"
 ln -sfnv "${PWD}/.gnupg" "${HOME}/.gnupg"
+
