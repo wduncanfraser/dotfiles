@@ -5,6 +5,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'mg979/vim-visual-multi'
 Plug 'vim-airline/vim-airline'
+Plug 'ntpeters/vim-better-whitespace'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -15,15 +16,32 @@ Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
+" Languages
+Plug 'leafgarland/typescript-vim'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'cespare/vim-toml'
+
+" Theme
 Plug 'morhetz/gruvbox'
 
 " COC
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
+" COC extensions
+let g:coc_global_extensions = [
+      \ 'coc-eslint',
+      \ 'coc-go',
+      \ 'coc-json',
+      \ 'coc-react-refactor',
+      \ 'coc-tsserver',
+      \ 'coc-rls',
+      \ ]
+
+" General
 set number       " show line numbers
 set showmatch    " show matching brackets
-set ignorecase   " case insensitive matching 
+set ignorecase   " case insensitive matching
 set hlsearch     " highlight search results
 
 " Default tab settings
@@ -38,17 +56,17 @@ let g:airline_powerline_fonts=1
 " Nerdtree
 "let g:NERDTreeGitStatusUseNerdFonts=1
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'✹',
-                \ 'Staged'    :'✚',
-                \ 'Untracked' :'✭',
-                \ 'Renamed'   :'➜',
-                \ 'Unmerged'  :'═',
-                \ 'Deleted'   :'✖',
-                \ 'Dirty'     :'✗',
-                \ 'Ignored'   :'☒',
-                \ 'Clean'     :'✔︎',
-                \ 'Unknown'   :'?',
-                \ }
+      \ 'Modified'  :'✹',
+      \ 'Staged'    :'✚',
+      \ 'Untracked' :'✭',
+      \ 'Renamed'   :'➜',
+      \ 'Unmerged'  :'═',
+      \ 'Deleted'   :'✖',
+      \ 'Dirty'     :'✗',
+      \ 'Ignored'   :'☒',
+      \ 'Clean'     :'✔︎',
+      \ 'Unknown'   :'?',
+      \ }
 
 " Colorscheme options.
 set bg=dark
