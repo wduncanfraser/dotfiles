@@ -20,6 +20,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'cespare/vim-toml'
+Plug 'dag/vim-fish'
 
 " Theme
 Plug 'morhetz/gruvbox'
