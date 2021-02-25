@@ -249,6 +249,9 @@ install_haskell() {
     libncurses-dev \
     libncurses5 \
     libtinfo5 \
+    # Project deps (XZ, SHA1, etc)
+    liblzma-dev \
+    zlib1g-dev \
     --no-install-recommends
 
   curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
