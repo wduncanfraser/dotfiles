@@ -75,6 +75,8 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
       \ 'Unknown'   :'?',
       \ }
 
+nnoremap <leader>n :NERDTreeFocus<CR>
+
 " ==== COC ====
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
