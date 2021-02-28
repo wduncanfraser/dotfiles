@@ -7,3 +7,4 @@ fish_variables
 !.gnupg/gpg*.conf
 
 config/nvim/plugged
+config/systemd/user/*wants

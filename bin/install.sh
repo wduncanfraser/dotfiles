@@ -94,6 +94,7 @@ base() {
     ncurses-term \
     neovim \
     openssh-client \
+    pass \
     pinentry-curses \
     pkg-config \
     psmisc \
@@ -310,40 +311,67 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
+  firefox_version="85.0.2"
+
+  # if we are passing the version
+  if [[ -n "$1" ]]; then
+    firefox_version=$1
+  fi
 
   # purge old src
   if [[ -d "$firefox_path" ]]; then
     sudo rm -rf "$firefox_path"
   fi
 
-  curl -fsSL https://download-installer.cdn.mozilla.net/pub/firefox/releases/85.0.2/linux-x86_64/en-US/firefox-85.0.2.tar.bz2 | sudo tar -v -C /opt -xj
+  curl -fsSL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$firefox_version/linux-x86_64/en-US/firefox-$firefox_version.tar.bz2" | sudo tar -v -C /opt -xj
 
   sudo tee /usr/share/applications/firefox-stable.desktop << EOF
 [Desktop Entry]
 Name=Firefox
 Comment=Web Browser
-Exec=env MOZ_ENABLE_WAYLAND=1 /opt/firefox/firefox %u
+Exec=env MOZ_ENABLE_WAYLAND=1 $firefox_path/firefox %u
 Terminal=false
 Type=Application
-Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+Icon=$firefox_path/browser/chrome/icons/default/default128.png
 Categories=Network;WebBrowser;
 MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
 StartupNotify=true
 EOF
 
-  sudo ln -svf /opt/firefox/firefox /usr/local/bin/firefox
-  sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser /opt/firefox/firefox 200 && sudo update-alternatives --set x-www-browser /opt/firefox/firefox
+  sudo ln -svf "$firefox_path/firefox" /usr/local/bin/firefox
+  sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser $firefox_path/firefox 200 && sudo update-alternatives --set x-www-browser $firefox_path/firefox
 }
 
-install_vscode() {
-  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-  sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+install_onivim2() { 
+  if [[ -n "$1" ]]; then
+    image_path=$1
+  else
+    echo "You need to specify path to downloaded onivim appimage"
+    exit 1
+  fi
 
-  sudo apt update || true
-  sudo apt install -y \
-    code \
-    --no-install-recommends
+  onivim2_path=/opt/onivim2
+
+  # Purge old versions
+  if [[ -d "$onivim2_path" ]]; then
+    sudo rm -rf "$onivim2_path"
+  fi
+
+  sudo mkdir -p $onivim2_path
+
+  sudo cp -v $image_path "$onivim2_path/Onivim2.AppImage"
+  sudo chmod +x "$onivim2_path/Onivim2.AppImage"
+
+  sudo tee /usr/share/applications/onivim2.desktop << EOF
+[Desktop Entry]
+Name=Onivim2
+Exec=$onivim2_path/Onivim2.AppImage
+Icon=Onivim2
+Type=Application
+Categories=Development;
+EOF
+
+  sudo ln -svf "$onivim2_path/Onivim2.AppImage" /usr/local/bin/oni2
 }
 
 install_nvim() {
@@ -356,6 +384,26 @@ install_nvim() {
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 }
 
+install_spotify() {
+  spotifyd_version="0.3.0"
+  spotifytui_version="0.23.0"
+
+  if [[ -d /usr/local/bin/spotifyd ]]; then
+    sudo rm -f /usr/local/bin/spotifyd
+  fi
+
+  curl -fsSL "https://github.com/Spotifyd/spotifyd/releases/download/v$spotifyd_version/spotifyd-linux-default.tar.gz" | sudo tar -v -C /usr/local/bin -xz
+
+  if [[ -d /usr/local/bin/spt ]]; then
+    sudo rm -f /usr/local/bin/spt
+  fi
+
+  curl -fsSL "https://github.com/Rigellute/spotify-tui/releases/download/v$spotifytui_version/spotify-tui-linux.tar.gz" | sudo tar -v -C /usr/local/bin -xz
+
+  systemctl --user enable spotifyd.service
+  systemctl --user start spotifyd.service
+}
+
 usage() {
   echo -e "install.sh\\n  This script installs my basic setup for a debian laptop, wsl, or vm\\n"
   echo "Usage:"
@@ -365,11 +413,12 @@ usage() {
   echo "  wm                                  - install window manager/desktop pkgs"
   echo "  rust                                - install rust"
   echo "  haskell                             - install haskell"
-  echo "  golang                              - install golang"
+  echo "  golang {version (optional)}         - install golang"
   echo "  node                                - install node"
-  echo "  firefox                             - install firefox current from tar"
-  echo "  vscode                              - install vscode"
+  echo "  firefox {version (optional)}        - install firefox current from tar"
+  echo "  onivim2 {path}                      - install onivim2 AppImage"
   echo "  nvim                                - install nvim and config"
+  echo "  spotify                             - install spotifyd and spotify-tui"
 }
 
 main() {
@@ -397,6 +446,7 @@ main() {
       ;;
     "wm")
       install_wm
+      install_spotify
       ;;
     "rust")
       install_rust
@@ -411,13 +461,16 @@ main() {
       install_node
       ;;
     "firefox")
-      install_firefox
+      install_firefox "$2"
       ;;
-    "vscode")
-      install_vscode
+    "onivim2")
+      install_onivim2 "$2"
       ;;
     "nvim")
       install_nvim
+      ;;
+    "spotify")
+      install_spotify
       ;;
     *)
       usage
