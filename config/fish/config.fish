@@ -15,6 +15,9 @@ test -f $HOME/.ghcup/env ; and set -gx PATH $HOME/.cabal/bin $HOME/.ghcup/bin $P
 set -gx EDITOR nvim
 set -gx BROWSER firefox
 
+# Firefox config
+set -gx MOZ_DBUS_REMOTE 1
+
 # GNUPG
 set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 

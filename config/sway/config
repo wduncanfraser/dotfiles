@@ -11,7 +11,7 @@ set $right l
 
 set $term foot
 set $menu rofi -terminal foot -show drun | xargs swaymsg exec --
-set $lock swaylock -f -c 000000
+set $lock swaylock -f
 set $history clipman pick --tool="rofi" --max-items=30 --histpath="~/.local/share/clipman.json"
 
 # set primary gruvbox colorscheme colors
@@ -44,9 +44,9 @@ exec mako
 
 # Idle
 exec swayidle -w \
-    timeout 300 'swaylock -f -c 000000' \
+    timeout 300 $lock \
     timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    before-sleep 'swaylock -f -c 000000'
+    before-sleep $lock
 
 # Clipboard Manager
 exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.local/share/clipman.json"

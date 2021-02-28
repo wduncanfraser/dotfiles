@@ -2,16 +2,52 @@
 set -e
 set -o pipefail
 
-ln -sfnv "${PWD}/config/fish" "${HOME}/.config/fish"
-ln -sfnv "${PWD}/config/fontconfig" "${HOME}/.config/fontconfig"
-ln -sfnv "${PWD}/config/foot" "${HOME}/.config/foot"
-ln -sfnv "${PWD}/config/gtk-3.0" "${HOME}/.config/gtk-3.0"
-ln -sfnv "${PWD}/config/mako" "${HOME}/.config/mako"
-ln -sfnv "${PWD}/config/nvim" "${HOME}/.config/nvim"
-ln -sfnv "${PWD}/config/rofi" "${HOME}/.config/rofi"
-ln -sfnv "${PWD}/config/spotifyd" "${HOME}/.config/spotifyd"
-ln -sfnv "${PWD}/config/sway" "${HOME}/.config/sway"
-ln -sfnv "${PWD}/config/systemd" "${HOME}/.config/systemd"
-ln -sfnv "${PWD}/config/waybar" "${HOME}/.config/waybar"
-ln -sfnv "${PWD}/.gnupg" "${HOME}/.gnupg"
+base() {
+  config_dirs=("fish"  "nvim")
+
+  for val in ${config_dirs[*]}; do
+    ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
+  done
+
+  ln -sfnv "${PWD}/.gnupg" "${HOME}/.gnupg"
+}
+
+wm() {
+  config_dirs=("fontconfig"  "foot" "gtk-3.0" "mako" "rofi" "spotifyd" "sway" "swaylock" "systemd" "waybar")
+
+  for val in ${config_dirs[*]}; do
+    ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
+  done
+}
+
+usage() {
+  echo -e "link_dotfiles.sh\\n  This script links dotfiles into place\\n"
+  echo "Usage:"
+  echo "  base                                - link dotfiles used everywhere (fish, nvim, gnupg, etc)"
+  echo "  wm                                  - link dotfiles used in a GUI/WM environment"
+}
+
+main() {
+  local cmd=$1
+
+  if [[ -z "$cmd" ]]; then
+    usage
+    exit 1
+  fi
+
+  case $cmd in
+    "base")
+      base
+      ;;
+    "wm")
+      base
+      wm
+      ;;
+    *)
+      usage
+      ;;
+    esac
+}
+
+main "$@"
 

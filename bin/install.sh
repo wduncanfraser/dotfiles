@@ -342,7 +342,7 @@ EOF
   sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser $firefox_path/firefox 200 && sudo update-alternatives --set x-www-browser $firefox_path/firefox
 }
 
-install_onivim2() { 
+install_onivim2() {
   if [[ -n "$1" ]]; then
     image_path=$1
   else
