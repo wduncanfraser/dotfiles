@@ -93,6 +93,7 @@ base() {
     mount \
     ncurses-term \
     neovim \
+    net-tools \
     openssh-client \
     pass \
     pinentry-curses \
@@ -199,6 +200,7 @@ install_wm() {
     fonts-hack \
     fonts-liberation2 \
     fonts-lmodern \
+    fonts-noto-cjk \
     fonts-noto-color-emoji \
     fonts-stix \
     fonts-symbola \
