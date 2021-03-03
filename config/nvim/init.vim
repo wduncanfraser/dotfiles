@@ -41,7 +41,7 @@ let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-react-refactor',
       \ 'coc-tsserver',
-      \ 'coc-rls',
+      \ 'coc-rust-analyzer',
       \ ]
 
 " General

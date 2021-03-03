@@ -205,6 +205,7 @@ install_wm() {
     fonts-stix \
     fonts-symbola \
     foot \
+    fuse \
     gnome-themes-standard \
     grimshot \
     imv \
@@ -238,7 +239,7 @@ install_wm() {
 install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-  rustup component add rls rust-analysis rust-src
+  rustup component add rust-src
 }
 
 install_haskell() {
