@@ -3,7 +3,7 @@
     "height": 24,
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": [],
-    "modules-right": ["tray", "temperature", "disk", "memory", "cpu", "network", "backlight", "pulseaudio", "battery", "custom/weather", "custom/clock"],
+    "modules-right": ["tray", "temperature", "disk", "memory", "cpu", "backlight", "pulseaudio", "battery", "custom/weather", "custom/clock"],
     "tray": {
         "icon-size": 22,
         "spacing": 10

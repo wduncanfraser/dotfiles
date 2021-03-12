@@ -76,6 +76,7 @@ base() {
     gawk \
     g++-multilib \
     gcc-multilib \
+    genius \
     git \
     git-extras \
     gnupg \
@@ -206,15 +207,18 @@ install_wm() {
     fonts-symbola \
     foot \
     fuse \
+    gnome-keyring \
     gnome-themes-standard \
     grimshot \
     imv \
     libgtk-3-bin \
     libnotify-bin \
+    libsixel-bin \
     mako-notifier \
     mpv \
     neofetch \
     network-manager \
+    network-manager-gnome \
     pinentry-gnome3 \
     playerctl \
     poppler-data \
