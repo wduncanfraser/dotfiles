@@ -20,6 +20,7 @@ Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Languages
+Plug 'rust-lang/rust.vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -75,7 +76,15 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
       \ 'Unknown'   :'?',
       \ }
 
-nnoremap <leader>n :NERDTreeFocus<CR>
+let NERDTreeQuitOnOpen = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+nnoremap <leader>n :NERDTreeToggle<CR>
+
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
 
 " ==== COC ====
 " Don't pass messages to |ins-completion-menu|.
