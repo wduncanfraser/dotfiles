@@ -13,11 +13,15 @@ base() {
 }
 
 wm() {
-  config_dirs=("fontconfig"  "foot" "gtk-3.0" "mako" "rofi" "spotifyd" "sway" "swaylock" "systemd" "waybar")
+  config_dirs=("fontconfig"  "foot" "gtk-3.0" "rofi" "spotifyd" "sway" "swaylock" "systemd" "waybar")
 
   for val in ${config_dirs[*]}; do
     ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
   done
+
+  # Mako doesn't like symlinks
+  mkdir -p "${HOME}/.config/mako"
+  ln -fv "${PWD}/config/mako/config" "${HOME}/.config/mako/config"
 }
 
 usage() {

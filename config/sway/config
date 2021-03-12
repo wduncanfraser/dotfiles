@@ -44,12 +44,15 @@ exec mako
 
 # Idle
 exec swayidle -w \
-    timeout 300 $lock \
+    timeout 300 '$lock' \
     timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    before-sleep $lock
+    before-sleep '$lock'
 
 # Clipboard Manager
 exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.local/share/clipman.json"
+
+# Network Manager Applet
+exec nm-applet --indicator
 
 ### Input configuration
 input "1739:52710:DLL0945:00_06CB:CDE6_Touchpad" {
