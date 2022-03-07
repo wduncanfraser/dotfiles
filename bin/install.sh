@@ -318,7 +318,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="85.0.2"
+  firefox_version="97.0.2"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -411,6 +411,32 @@ install_spotify() {
   systemctl --user start spotifyd.service
 }
 
+install_rider() {
+  rider_version="2021.3.3"
+  rider_path="JetBrains Rider-${rider_version}"
+
+  # purge old src
+  if [[ -d "$rider_path" ]]; then
+    sudo rm -rf "$rider_path"
+  fi
+
+  curl -fsSL "https://download.jetbrains.com/rider/JetBrains.Rider-${rider_version}.tar.gz" | sudo tar -v -C /opt -xz
+
+  sudo tee /usr/share/applications/jetbrains-rider.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=JetBrains Rider
+Icon=/opt/${rider_path}/bin/rider.svg
+Exec=env _JAVA_AWT_WM_NONREPARENTING=1 "/opt/${rider_path}/bin/rider.sh" %f
+Comment=A cross-platform IDE for .NET
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-rider
+StartupNotify=true
+EOF
+}
+
 usage() {
   echo -e "install.sh\\n  This script installs my basic setup for a debian laptop, wsl, or vm\\n"
   echo "Usage:"
@@ -426,6 +452,7 @@ usage() {
   echo "  onivim2 {path}                      - install onivim2 AppImage"
   echo "  nvim                                - install nvim and config"
   echo "  spotify                             - install spotifyd and spotify-tui"
+  echo "  rider			                          - install rider"
 }
 
 main() {
@@ -478,6 +505,9 @@ main() {
       ;;
     "spotify")
       install_spotify
+      ;;
+    "rider")
+      install_rider
       ;;
     *)
       usage
