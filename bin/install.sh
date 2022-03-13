@@ -318,7 +318,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="97.0.2"
+  firefox_version="98.0"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -349,43 +349,23 @@ EOF
   sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser $firefox_path/firefox 200 && sudo update-alternatives --set x-www-browser $firefox_path/firefox
 }
 
-install_onivim2() {
-  if [[ -n "$1" ]]; then
-    image_path=$1
-  else
-    echo "You need to specify path to downloaded onivim appimage"
-    exit 1
-  fi
-
-  onivim2_path=/opt/onivim2
-
-  # Purge old versions
-  if [[ -d "$onivim2_path" ]]; then
-    sudo rm -rf "$onivim2_path"
-  fi
-
-  sudo mkdir -p $onivim2_path
-
-  sudo cp -v $image_path "$onivim2_path/Onivim2.AppImage"
-  sudo chmod +x "$onivim2_path/Onivim2.AppImage"
-
-  sudo tee /usr/share/applications/onivim2.desktop << EOF
-[Desktop Entry]
-Name=Onivim2
-Exec=$onivim2_path/Onivim2.AppImage
-Icon=Onivim2
-Type=Application
-Categories=Development;
-EOF
-
-  sudo ln -svf "$onivim2_path/Onivim2.AppImage" /usr/local/bin/oni2
-}
-
 install_nvim() {
-  sudo apt update || true
-  sudo apt install -y \
-    neovim \
-    --no-install-recommends
+  nvim_version="0.6.1"
+  nvim_path=/opt/nvim
+  nvim_image=$nvim_path/nvim.appimage
+  
+  # Purge old versions
+  if [[ -d "$nvim_path" ]]; then
+    sudo rm -rf "$nvim_path"
+  fi
+
+  sudo mkdir -p $nvim_path
+  
+  curl -fsSL "https://github.com/neovim/neovim/releases/download/v$nvim_version/nvim.appimage" | sudo dd of=$nvim_image
+
+  sudo chmod +x $nvim_image
+
+  sudo ln -svf $nvim_image /usr/local/bin/nvim
 
   sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -449,7 +429,6 @@ usage() {
   echo "  golang {version (optional)}         - install golang"
   echo "  node                                - install node"
   echo "  firefox {version (optional)}        - install firefox current from tar"
-  echo "  onivim2 {path}                      - install onivim2 AppImage"
   echo "  nvim                                - install nvim and config"
   echo "  spotify                             - install spotifyd and spotify-tui"
   echo "  rider			                          - install rider"
@@ -496,9 +475,6 @@ main() {
       ;;
     "firefox")
       install_firefox "$2"
-      ;;
-    "onivim2")
-      install_onivim2 "$2"
       ;;
     "nvim")
       install_nvim
