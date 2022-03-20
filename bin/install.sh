@@ -211,6 +211,7 @@ install_wm() {
     gnome-themes-standard \
     grimshot \
     imv \
+    kanshi \
     libgtk-3-bin \
     libnotify-bin \
     libsixel-bin \
@@ -225,6 +226,10 @@ install_wm() {
     pulseaudio \
     pulseaudio-module-bluetooth \
     pulsemixer \
+    remmina \
+    remmina-plugin-rdp \
+    remmina-plugin-vnc \
+    remmina-plugin-secret \
     rofi \
     waybar \
     wev \
@@ -291,7 +296,7 @@ install_node() {
   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 
   # Replace with the branch of Node.js or io.js you want to install: node_6.x, node_8.x, etc...
-  VERSION=node_14.x
+  VERSION=node_16.x
   # The below command will set this correctly, but if lsb_release isn't available, you can set it manually:
   # - For Debian distributions: jessie, sid, etc...
   # - For Ubuntu distributions: xenial, bionic, etc...
@@ -318,7 +323,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="98.0"
+  firefox_version="98.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -353,27 +358,28 @@ install_nvim() {
   nvim_version="0.6.1"
   nvim_path=/opt/nvim
   nvim_image=$nvim_path/nvim.appimage
-  
+
   # Purge old versions
   if [[ -d "$nvim_path" ]]; then
     sudo rm -rf "$nvim_path"
   fi
 
   sudo mkdir -p $nvim_path
-  
+
   curl -fsSL "https://github.com/neovim/neovim/releases/download/v$nvim_version/nvim.appimage" | sudo dd of=$nvim_image
 
   sudo chmod +x $nvim_image
 
   sudo ln -svf $nvim_image /usr/local/bin/nvim
+  sudo ln -svf $nvim_image /usr/local/bin/vim
 
   sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 }
 
 install_spotify() {
-  spotifyd_version="0.3.0"
-  spotifytui_version="0.23.0"
+  spotifyd_version="0.3.3"
+  spotifytui_version="0.25.0"
 
   if [[ -d /usr/local/bin/spotifyd ]]; then
     sudo rm -f /usr/local/bin/spotifyd
@@ -401,6 +407,9 @@ install_rider() {
   fi
 
   curl -fsSL "https://download.jetbrains.com/rider/JetBrains.Rider-${rider_version}.tar.gz" | sudo tar -v -C /opt -xz
+
+  # Fix fish shell loading https://github.com/fish-shell/fish-shell/issues/3988:q
+  sudo ln -s ~/.config/fish/fish_variables /opt/${rider_path}/plugins/terminal/fish/fish_variables
 
   sudo tee /usr/share/applications/jetbrains-rider.desktop << EOF
 [Desktop Entry]

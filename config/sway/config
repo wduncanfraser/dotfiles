@@ -10,7 +10,7 @@ set $up k
 set $right l
 
 set $term foot
-set $menu rofi -terminal foot -show drun | xargs swaymsg exec --
+set $menu rofi -terminal foot -show drun -monitor 0 | xargs swaymsg exec --
 set $lock swaylock -f
 set $history clipman pick --tool="rofi" --max-items=30 --histpath="~/.local/share/clipman.json"
 
@@ -35,12 +35,12 @@ font pango:Hack 9
 output * bg ${HOME}/pictures/spacex_crs20_launch.jpg fill
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
-output eDP-1 resolution 1920x1200 position 0,0
-
+# Rely on Kanshi
+# output eDP-1 resolution 1920x1200 position 0,0
 
 ### Startup Programs
 # Notification daemon
-exec mako
+exec mako >/tmp/mako.log 2>&1
 
 # Idle
 exec swayidle -w \
@@ -53,6 +53,9 @@ exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.local/
 
 # Network Manager Applet
 exec nm-applet --indicator
+
+# Kanshi for display hotplug
+exec_always kanshi >/tmp/kanshi.log 2>&1
 
 ### Input configuration
 input "1739:52710:DLL0945:00_06CB:CDE6_Touchpad" {
@@ -164,6 +167,12 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 # Note: workspaces can have any name you want, not just numbers.
 # We just use 1-10 as the default.
+
+# Move workspaces between monitors
+bindsym $mod+Control+Shift+Right move workspace to output right
+bindsym $mod+Control+Shift+Left move workspace to output left
+bindsym $mod+Control+Shift+Down move workspace to output down
+bindsym $mod+Control+Shift+Up move workspace to output up
 
 ## Layout stuff:
 # You can "split" the current object of your focus with
