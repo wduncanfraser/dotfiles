@@ -49,6 +49,8 @@ deb-src https://deb.debian.org/debian/ bullseye main contrib non-free
 
 deb https://security.debian.org/debian-security bullseye-security main contrib non-free
 deb-src https://security.debian.org/debian-security bullseye-security main contrib non-free
+
+deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free
 EOF
 }
 
@@ -77,7 +79,7 @@ base() {
     g++-multilib \
     gcc-multilib \
     genius \
-    git \
+    git/bullseye-backports \
     git-extras \
     gnupg \
     gpg-agent \
@@ -100,6 +102,7 @@ base() {
     pinentry-curses \
     pkg-config \
     psmisc \
+    pv \
     ranger \
     shellcheck \
     silversearcher-ag \
@@ -323,7 +326,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="98.0.1"
+  firefox_version="102.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -354,8 +357,17 @@ EOF
   sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser $firefox_path/firefox 200 && sudo update-alternatives --set x-www-browser $firefox_path/firefox
 }
 
+install_chromium() {
+  sudo apt update || true
+
+  sudo apt install -y \
+    chromium \
+    chromium-sandbox \
+    --no-install-recommends
+}
+
 install_nvim() {
-  nvim_version="0.6.1"
+  nvim_version="0.7.2"
   nvim_path=/opt/nvim
   nvim_image=$nvim_path/nvim.appimage
 
@@ -398,7 +410,7 @@ install_spotify() {
 }
 
 install_rider() {
-  rider_version="2021.3.3"
+  rider_version="2022.1.2"
   rider_path="JetBrains Rider-${rider_version}"
 
   # purge old src
@@ -409,7 +421,7 @@ install_rider() {
   curl -fsSL "https://download.jetbrains.com/rider/JetBrains.Rider-${rider_version}.tar.gz" | sudo tar -v -C /opt -xz
 
   # Fix fish shell loading https://github.com/fish-shell/fish-shell/issues/3988:q
-  sudo ln -s ~/.config/fish/fish_variables /opt/${rider_path}/plugins/terminal/fish/fish_variables
+  sudo ln -s ~/.config/fish/fish_variables "/opt/${rider_path}/plugins/terminal/fish/fish_variables"
 
   sudo tee /usr/share/applications/jetbrains-rider.desktop << EOF
 [Desktop Entry]
@@ -437,10 +449,11 @@ usage() {
   echo "  haskell                             - install haskell"
   echo "  golang {version (optional)}         - install golang"
   echo "  node                                - install node"
+  echo "  chromium                            - install chromium"
   echo "  firefox {version (optional)}        - install firefox current from tar"
   echo "  nvim                                - install nvim and config"
   echo "  spotify                             - install spotifyd and spotify-tui"
-  echo "  rider			                          - install rider"
+  echo "  rider                               - install rider"
 }
 
 main() {
@@ -481,6 +494,9 @@ main() {
       ;;
     "node")
       install_node
+      ;;
+    "chromium")
+      install_chromium
       ;;
     "firefox")
       install_firefox "$2"
