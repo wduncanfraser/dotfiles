@@ -75,6 +75,7 @@ base() {
     file \
     findutils \
     fish \
+    fuse \
     gawk \
     g++-multilib \
     gcc-multilib \
