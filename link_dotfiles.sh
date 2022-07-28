@@ -32,7 +32,7 @@ wm() {
 }
 
 mac() {
-  config_dirs=("fish"  "nvim")
+  config_dirs=("alacritty" "fish"  "nvim")
 
   for val in ${config_dirs[*]}; do
     ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
