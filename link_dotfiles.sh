@@ -9,7 +9,14 @@ base() {
     ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
   done
 
-  ln -sfnv "${PWD}/.gnupg" "${HOME}/.gnupg"
+  mkdir -p "${HOME}/.gnupg"
+  ln -sfnv "${PWD}/.gnupg/gpg-agent.conf" "${HOME}/.gnupg/gpg-agent.conf"
+  #for file in $(find "${PWD}/.gnupg" -mindepth 1); do
+	#	f=$(basename ${file})
+	#	ln -sfnv "${file}" "${HOME}/.gnupg/${f}"
+	#done
+
+  ln -sfnv "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
 }
 
 wm() {
@@ -24,11 +31,25 @@ wm() {
   ln -fv "${PWD}/config/mako/config" "${HOME}/.config/mako/config"
 }
 
+mac() {
+  config_dirs=("fish"  "nvim")
+
+  for val in ${config_dirs[*]}; do
+    ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
+  done
+
+  #mkdir -p "${HOME}/.gnupg"
+  #ln -sfnv "${PWD}/.gnupg/gpg-agent.conf" "${HOME}/.gnupg/gpg-agent.conf"
+
+  ln -sfnv "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
+}
+
 usage() {
   echo -e "link_dotfiles.sh\\n  This script links dotfiles into place\\n"
   echo "Usage:"
   echo "  base                                - link dotfiles used everywhere (fish, nvim, gnupg, etc)"
   echo "  wm                                  - link dotfiles used in a GUI/WM environment"
+  echo "  mac                                 - link dotfiles used in macOS"
 }
 
 main() {
@@ -46,6 +67,9 @@ main() {
     "wm")
       base
       wm
+      ;;
+    "mac")
+      mac
       ;;
     *)
       usage

@@ -112,6 +112,7 @@ base() {
     sysstat \
     systemd \
     tar \
+    tmux \
     traceroute \
     tree \
     tzdata \
@@ -327,7 +328,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="102.0.1"
+  firefox_version="103.0"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
