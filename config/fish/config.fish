@@ -11,6 +11,9 @@ set -gx PATH $HOME/.cargo/bin $PATH
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
 test -f $HOME/.ghcup/env ; and set -gx PATH $HOME/.cabal/bin $HOME/.ghcup/bin $PATH
 
+# local
+set -gx PATH $HOME/.local/bin $PATH
+
 # Defaults
 set -gx EDITOR nvim
 set -gx BROWSER firefox
@@ -27,3 +30,8 @@ eval (direnv hook fish)
 if status --is-interactive
     set -x GPG_TTY (tty)
 end
+
+# Prompt features
+set --universal pure_separate_prompt_on_error true
+set --universal pure_show_subsecond_command_duration true
+set --universal pure_threshold_command_duration 1
