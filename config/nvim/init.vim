@@ -58,6 +58,9 @@ set softtabstop=2
 set expandtab
 set shiftwidth=2
 
+" Enable mouse
+set mouse=a
+
 " ==== Airline ====
 let g:airline_powerline_fonts=1
 
@@ -76,7 +79,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
       \ 'Unknown'   :'?',
       \ }
 
-let NERDTreeQuitOnOpen = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
