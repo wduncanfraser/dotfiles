@@ -27,6 +27,7 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'cespare/vim-toml'
 Plug 'dag/vim-fish'
 Plug 'uarun/vim-protobuf'
+Plug 'LnL7/vim-nix'
 
 " Theme
 Plug 'lifepillar/vim-gruvbox8'
