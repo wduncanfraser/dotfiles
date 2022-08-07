@@ -413,7 +413,7 @@ install_spotify() {
 }
 
 install_rider() {
-  rider_version="2022.1.2"
+  rider_version="2022.2"
   rider_path="JetBrains Rider-${rider_version}"
 
   # purge old src
