@@ -204,6 +204,7 @@ install_wm() {
     clipman \
     fonts-font-awesome \
     fonts-hack \
+    fonts-jetbrains-mono \
     fonts-liberation2 \
     fonts-lmodern \
     fonts-noto-cjk \
@@ -328,7 +329,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="103.0"
+  firefox_version="103.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
