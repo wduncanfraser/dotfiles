@@ -223,6 +223,7 @@ install_wm() {
     libsixel-bin \
     mako-notifier \
     mpv \
+    nautilus \
     neofetch \
     network-manager \
     network-manager-gnome \
@@ -236,10 +237,10 @@ install_wm() {
     remmina-plugin-rdp \
     remmina-plugin-vnc \
     remmina-plugin-secret \
-    rofi \
     waybar \
     wev \
     wl-clipboard \
+    wofi \
     xdg-utils \
     zathura \
     --no-install-recommends
@@ -329,7 +330,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="103.0.1"
+  firefox_version="103.0.2"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
