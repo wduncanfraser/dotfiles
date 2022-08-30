@@ -96,7 +96,6 @@ base() {
     manpages \
     mount \
     ncurses-term \
-    neovim \
     net-tools \
     openssh-client \
     pass \
@@ -125,6 +124,8 @@ base() {
 
   setup_sudo
   set_shell
+
+  install_nvim
 
   apt autoremove -y
   apt autoclean -y
@@ -193,7 +194,6 @@ install_wm() {
 
   sudo apt install -y \
     sway \
-    swaylock \
     swayidle \
     sway-backgrounds \
     adwaita-icon-theme \
@@ -221,6 +221,7 @@ install_wm() {
     libgtk-3-bin \
     libnotify-bin \
     libsixel-bin \
+    libspa-0.2-bluetooth \
     mako-notifier \
     mpv \
     nautilus \
@@ -228,10 +229,11 @@ install_wm() {
     network-manager \
     network-manager-gnome \
     pinentry-gnome3 \
+    pipewire \
+    pipewire-audio-client-libraries \
     playerctl \
     poppler-data \
-    pulseaudio \
-    pulseaudio-module-bluetooth \
+    pulseaudio-utils \
     pulsemixer \
     remmina \
     remmina-plugin-rdp \
@@ -245,11 +247,15 @@ install_wm() {
     zathura \
     --no-install-recommends
 
-  # start and enable pulseaudio
+  # Setup Pipewire
+  sudo touch /etc/pipewire/media-session.d/with-pulseaudio
+  sudo touch /etc/pipewire/media-session.d/with-alsa
+  sudo cp /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.* /etc/systemd/user/
+  sudo cp /usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d/
+
+  # start and enable pipewire
   systemctl --user daemon-reload
-  systemctl --user enable pulseaudio.service
-  systemctl --user enable pulseaudio.socket
-  systemctl --user start pulseaudio.service
+  systemctl --user --now enable pipewire pipewire-pulse
 }
 
 install_rust() {
@@ -327,10 +333,11 @@ install_firefox() {
   sudo apt install -y \
     libdbus-glib-1-2 \
     libgtk-3-0 \
+    libxtst6 \
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="103.0.2"
+  firefox_version="104.0"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then

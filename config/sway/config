@@ -67,6 +67,16 @@ input "1739:52710:DLL0945:00_06CB:CDE6_Touchpad" {
     middle_emulation disabled
 }
 
+input "1739:0:Synaptics_TM3418-002" {
+    click_method clickfinger
+    dwt enabled
+    tap enabled
+    tap_button_map lrm
+    scroll_method two_finger
+    natural_scroll enabled
+    middle_emulation disabled
+}
+
 input "type:keyboard" {
     xkb_options ctrl:nocaps
 }
@@ -237,10 +247,10 @@ mode "resize" {
 ## Notifications
 bindsym $mod+n mode notifications
 mode notifications {
-	bindsym Escape mode default
-	bindsym Return exec makoctl invoke; exec makoctl dismiss; mode default
-	bindsym d exec makoctl dismiss; mode default
-	bindsym Shift+d exec makoctl dismiss -a; mode default
+    bindsym Escape mode default
+    bindsym Return exec makoctl invoke; exec makoctl dismiss; mode default
+    bindsym d exec makoctl dismiss; mode default
+    bindsym Shift+d exec makoctl dismiss -a; mode default
 }
 
 ## Window settings
