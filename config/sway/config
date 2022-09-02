@@ -54,11 +54,15 @@ exec wl-paste -t text --watch clipman store --max-items=60 --histpath="~/.local/
 # Network Manager Applet
 exec nm-applet --indicator
 
+# Screen Sharing
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
 # Kanshi for display hotplug
 exec_always kanshi >/tmp/kanshi.log 2>&1
 
 ### Input configuration
 input "1739:52710:DLL0945:00_06CB:CDE6_Touchpad" {
+    click_method clickfinger
     dwt enabled
     tap enabled
     tap_button_map lrm

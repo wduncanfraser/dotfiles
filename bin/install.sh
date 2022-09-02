@@ -50,7 +50,9 @@ deb-src https://deb.debian.org/debian/ bullseye main contrib non-free
 deb https://security.debian.org/debian-security bullseye-security main contrib non-free
 deb-src https://security.debian.org/debian-security bullseye-security main contrib non-free
 
-deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free
+deb https://deb.debian.org/debian/ bullseye-backports main contrib non-free
+
+deb [allow-insecure=yes] https://discovery-deb.nyc3.digitaloceanspaces.com/debian bullseye-bp main
 EOF
 }
 
@@ -125,8 +127,6 @@ base() {
   setup_sudo
   set_shell
 
-  install_nvim
-
   apt autoremove -y
   apt autoclean -y
   apt clean -y
@@ -172,7 +172,7 @@ install_graphics() {
 
 	case $system in
 		"intel")
-			pkgs+=( mesa-vulkan-drivers vulkan-tools )
+			pkgs+=( mesa-vulkan-drivers vulkan-tools intel-media-va-driver-non-free  )
 			;;
 		"vmware")
 			pkgs+=( open-vm-tools )
@@ -192,9 +192,10 @@ install_graphics() {
 install_wm() {
   sudo apt update || true
 
-  sudo apt install -y \
+  sudo apt install -y --allow-unauthenticated \
     sway \
     swayidle \
+    swaylock \
     sway-backgrounds \
     adwaita-icon-theme \
     bluez \
@@ -231,6 +232,7 @@ install_wm() {
     pinentry-gnome3 \
     pipewire \
     pipewire-audio-client-libraries \
+    pipewire-pulse \
     playerctl \
     poppler-data \
     pulseaudio-utils \
@@ -241,21 +243,22 @@ install_wm() {
     remmina-plugin-secret \
     waybar \
     wev \
+    wireplumber \
     wl-clipboard \
     wofi \
+    xdg-desktop-portal-gtk \
+    xdg-desktop-portal-wlr \
     xdg-utils \
     zathura \
     --no-install-recommends
 
-  # Setup Pipewire
-  sudo touch /etc/pipewire/media-session.d/with-pulseaudio
-  sudo touch /etc/pipewire/media-session.d/with-alsa
-  sudo cp /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.* /etc/systemd/user/
+  # https://wiki.debian.org/PipeWire#Debian_Testing.2FUnstablehttps://wiki.debian.org/PipeWire#Debian_Testing.2FUnstable
+  # Setup Pipewire for ALSA
   sudo cp /usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d/
 
   # start and enable pipewire
   systemctl --user daemon-reload
-  systemctl --user --now enable pipewire pipewire-pulse
+  systemctl --user --now enable pipewire pipewire-pulse wireplumber.service
 }
 
 install_rust() {
@@ -337,7 +340,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="104.0"
+  firefox_version="104.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -492,6 +495,7 @@ main() {
       ;;
     "wm")
       install_wm
+      install_nvim
       install_spotify
       ;;
     "rust")
