@@ -170,18 +170,21 @@ install_graphics() {
   local system=$1
   local pkgs=( mesa-utils xwayland )
 
-	case $system in
-		"intel")
-			pkgs+=( mesa-vulkan-drivers vulkan-tools intel-media-va-driver-non-free  )
-			;;
-		"vmware")
-			pkgs+=( open-vm-tools )
-			;;
-		*)
-			echo "You need to specify whether it's intel or vmware gpu"
-			exit 1
-			;;
-	esac
+  case $system in
+    "intel")
+      pkgs+=( mesa-vulkan-drivers vulkan-tools intel-media-va-driver-non-free  )
+      ;;
+    "optimus")
+      pkgs+=( bumblebee-nvidia bbswitch-dkms primus-nvidia primus-vk-nvidia linux-headers-generic )
+      ;;
+    "vmware")
+      pkgs+=( open-vm-tools )
+      ;;
+    *)
+      echo "You need to specify whether it's intel, optimus, or vmware gpu"
+      exit 1
+      ;;
+  esac
 
   apt update || true
   apt -y upgrade
@@ -457,7 +460,7 @@ usage() {
   echo "Usage:"
   echo "  base                                - setup sources & install base pkgs used in all setups"
   echo "  physical {amd, intel}               - setup firmware, etc. Things we need on a physical machine, but not VM/WSL"
-  echo "  graphics {intel, vmware}            - install graphics drivers"
+  echo "  graphics {intel, optimus, vmware}   - install graphics drivers"
   echo "  wm                                  - install window manager/desktop pkgs"
   echo "  rust                                - install rust"
   echo "  haskell                             - install haskell"
