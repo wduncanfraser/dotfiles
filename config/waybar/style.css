@@ -55,8 +55,8 @@ window#waybar.hidden {
 #mode,
 #idle_inhibitor,
 #mpd {
-  padding: 0 5px;
-  margin: 0 4px;
+  padding: 0 4px;
+  margin: 0 2px;
   color: #ebdbb2; }
 
 #window,
@@ -92,9 +92,6 @@ label:focus {
 
 #network.disconnected {
   background-color: #cc241d; }
-
-#pulseaudio.muted {
-  background-color: #d79921; }
 
 #temperature.critical {
   background-color: #cc241d; }

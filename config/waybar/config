@@ -3,7 +3,7 @@
     "height": 24,
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": [],
-    "modules-right": ["tray", "temperature", "disk", "memory", "cpu", "backlight", "pulseaudio", "battery", "custom/weather", "custom/clock"],
+    "modules-right": ["tray", "memory", "cpu", "backlight", "pulseaudio", "battery", "custom/weather", "custom/clock"],
     "tray": {
         "icon-size": 22,
         "spacing": 10
@@ -20,6 +20,7 @@
             "warning": 30,
             "critical": 15
         },
+        "tooltip-format": "{capacity}%, {timeTo}"
     },
     "cpu": {
         "format": "{usage}% "
@@ -53,9 +54,12 @@
         "max-length": 50
     },
     "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}% {icon}",
-        "format-muted": "",
+        "format": "{volume}% {icon} {format_source}",
+        "format-muted": "<span color=\"#d79921\"></span> {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": "<span color=\"#d79921\"></span> {format_source}",
+        "format-source": "",
+        "format-source-muted": "<span color=\"#d79921\"></span>",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
@@ -65,10 +69,11 @@
             "car": "",
             "default": ["", ""]
         },
-        "scroll-step": 1
+        "scroll-step": 1,
+        "on-click": "foot pulsemixer"
     },
     "temperature": {
-        "thermal-zone": 8,
+        //"thermal-zone": 8,
         //"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input",
         "critical-threshold": 80,
         "format-critical": "{temperatureC}°C ",

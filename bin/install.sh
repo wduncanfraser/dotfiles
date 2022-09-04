@@ -189,7 +189,7 @@ install_graphics() {
   apt update || true
   apt -y upgrade
 
-  apt install -y "${pkgs[@]}" --no-install-recommends
+  apt install -y --allow-unauthenticated "${pkgs[@]}" --no-install-recommends
 }
 
 install_wm() {
@@ -201,6 +201,7 @@ install_wm() {
     swaylock \
     sway-backgrounds \
     adwaita-icon-theme \
+    blueman \
     bluez \
     bluez-firmware \
     brightness-udev \
@@ -357,7 +358,8 @@ install_firefox() {
 
   curl -fsSL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$firefox_version/linux-x86_64/en-US/firefox-$firefox_version.tar.bz2" | sudo tar -v -C /opt -xj
 
-  sudo tee /usr/share/applications/firefox-stable.desktop << EOF
+  sudo mkdir -p /usr/local/share/applications
+  sudo tee /usr/local/share/applications/firefox-stable.desktop << EOF
 [Desktop Entry]
 Name=Firefox
 Comment=Web Browser
@@ -381,6 +383,41 @@ install_chromium() {
     chromium \
     chromium-sandbox \
     --no-install-recommends
+}
+
+install_code() {
+  curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg
+
+  sudo tee /etc/apt/sources.list.d/vscode.list << EOF
+deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main
+EOF
+
+  sudo apt update || true
+  sudo apt install -y \
+    code \
+    --no-install-recommends
+
+  sudo mkdir -p $HOME/.local/share/applications
+  sudo tee $HOME/.local/share/applications/code.desktop << EOF
+[Desktop Entry]
+Name=Visual Studio Code
+Comment=Code Editing. Redefined.
+GenericName=Text Editor
+Exec=/usr/share/code/code --ozone-platform-hint=auto --unity-launch %F
+Icon=com.visualstudio.code
+Type=Application
+StartupNotify=false
+StartupWMClass=Code
+Categories=TextEditor;Development;IDE;
+MimeType=text/plain;inode/directory;application/x-code-workspace;
+Actions=new-empty-window;
+Keywords=vscode;
+
+[Desktop Action new-empty-window]
+Name=New Empty Window
+Exec=/usr/share/code/code --ozone-platform-hint=auto --new-window %F
+Icon=com.visualstudio.code
+EOF
 }
 
 install_nvim() {
@@ -440,7 +477,8 @@ install_rider() {
   # Fix fish shell loading https://github.com/fish-shell/fish-shell/issues/3988:q
   sudo ln -s ~/.config/fish/fish_variables "/opt/${rider_path}/plugins/terminal/fish/fish_variables"
 
-  sudo tee /usr/share/applications/jetbrains-rider.desktop << EOF
+  sudo mkdir -p /usr/local/share/applications
+  sudo tee /usr/local/share/applications/jetbrains-rider.desktop << EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -468,6 +506,7 @@ usage() {
   echo "  node                                - install node"
   echo "  chromium                            - install chromium"
   echo "  firefox {version (optional)}        - install firefox current from tar"
+  echo "  code                                - install vscode"
   echo "  nvim                                - install nvim and config"
   echo "  spotify                             - install spotifyd and spotify-tui"
   echo "  rider                               - install rider"
@@ -518,6 +557,9 @@ main() {
       ;;
     "firefox")
       install_firefox "$2"
+      ;;
+    "code")
+      install_code
       ;;
     "nvim")
       install_nvim
