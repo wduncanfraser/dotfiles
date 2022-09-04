@@ -1,9 +1,9 @@
 # Dotfiles
 
-TBD
+Dotfiles used by me on Debian, Debian WSL, and MacOS machines.
+
+No warranty, no guarantees. These meet my needs.
 
 ## Credits
 
-+ Pulled dunst theme from https://github.com/a-schaefers/i3-wm-gruvbox-theme
-+ Gruvbox Xresources colors from https://github.com/morhetz/gruvbox-contrib
-
+Original Inspiration - https://github.com/jessfraz/dotfiles
