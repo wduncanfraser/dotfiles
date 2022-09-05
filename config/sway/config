@@ -57,8 +57,8 @@ exec nm-applet --indicator
 # Bluetooth
 exec blueman-applet
 
-# Screen Sharing
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+# DBUS for GTK and Screen Sharing
+exec dbus-update-activation-environment --systemd DISPAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
 
 # Kanshi for display hotplug
 exec_always kanshi >/tmp/kanshi.log 2>&1

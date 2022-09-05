@@ -145,7 +145,7 @@ set_shell() {
 
 install_physical() {
   local system=$1
-  local pkgs=( acpi firmware-linux fwupd fwupdate lm-sensors )
+  local pkgs=( acpi firmware-linux fwupd fwupdate lm-sensors upower )
 
   case $system in
 		"amd")
@@ -207,6 +207,7 @@ install_wm() {
     brightness-udev \
     brightnessctl \
     clipman \
+    fonts-droid-fallback \
     fonts-font-awesome \
     fonts-hack \
     fonts-jetbrains-mono \
@@ -214,15 +215,20 @@ install_wm() {
     fonts-lmodern \
     fonts-noto-cjk \
     fonts-noto-color-emoji \
+    fonts-noto-mono \
     fonts-stix \
     fonts-symbola \
     foot \
     fuse \
+    gir1.2-gtksource-4 \
     gnome-keyring \
     gnome-themes-standard \
+    gnome-sushi \
     grimshot \
+    gvfs-backends \
     imv \
     kanshi \
+    libgdk-pixbuf2.0-bin \
     libgtk-3-bin \
     libnotify-bin \
     libsixel-bin \
@@ -246,6 +252,8 @@ install_wm() {
     remmina-plugin-vnc \
     remmina-plugin-secret \
     seahorse \
+    seahorse-nautilus \
+    usbmuxd \
     waybar \
     wev \
     wireplumber \
@@ -264,6 +272,23 @@ install_wm() {
   # start and enable pipewire
   systemctl --user daemon-reload
   systemctl --user --now enable pipewire pipewire-pulse wireplumber.service
+}
+
+install_docker() {
+  curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/docker.gpg
+
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/debian \
+    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+
+  sudo apt update || true
+  sudo apt install -y \
+    docker-ce \
+    docker-ce-cli \
+    containerd.io \
+    docker-compose-plugin \
+    pigz \
+    --no-install-recommends
 }
 
 install_rust() {
@@ -471,6 +496,7 @@ usage() {
   echo "  physical {amd, intel}               - setup firmware, etc. Things we need on a physical machine, but not VM/WSL"
   echo "  graphics {intel, optimus, vmware}   - install graphics drivers"
   echo "  wm                                  - install window manager/desktop pkgs"
+  echo "  docker                              - install docker from official repos"
   echo "  rust                                - install rust"
   echo "  haskell                             - install haskell"
   echo "  golang {version (optional)}         - install golang"
@@ -507,8 +533,9 @@ main() {
       ;;
     "wm")
       install_wm
-      install_nvim
-      install_spotify
+      ;;
+    "docker")
+      install_docker
       ;;
     "rust")
       install_rust
