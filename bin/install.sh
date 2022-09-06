@@ -308,7 +308,10 @@ install_haskell() {
     libncurses-dev \
     libncurses5 \
     libtinfo5 \
-    # Project deps (XZ, SHA1, etc)
+    --no-install-recommends
+
+  # Project deps (XZ, SHA1, etc)
+  sudo apt install -y \
     liblzma-dev \
     zlib1g-dev \
     --no-install-recommends
@@ -357,6 +360,18 @@ EOF
   sudo apt update || true
   sudo apt install -y \
     nodejs \
+    --no-install-recommends
+}
+
+install_dotnet() {
+  TEMP_DEB="$(mktemp)"
+  wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O "$TEMP_DEB"
+  sudo dpkg -i "$TEMP_DEB"
+  rm -f "$TEMP_DEB"
+
+  sudo apt update || true
+  sudo apt install -y \
+    dotnet-sdk-6.0 \
     --no-install-recommends
 }
 
@@ -423,8 +438,15 @@ EOF
     code \
     --no-install-recommends
 
-  sudo mkdir -p $HOME/.local/share/applications
-  sudo tee $HOME/.local/share/applications/code.desktop << EOF
+  mkdir -p "$HOME/local/bin"
+  tee "$HOME/.local/bin/code" << 'EOF'
+#!/bin/sh
+exec /usr/bin/code --ozone-platform-hint=auto "$@"
+EOF
+  chmod +x "$HOME/.local/bin/code"
+
+  mkdir -p "$HOME/.local/share/applications"
+  tee "$HOME/.local/share/applications/code.desktop" << EOF
 [Desktop Entry]
 Name=Visual Studio Code
 Comment=Code Editing. Redefined.
@@ -501,6 +523,7 @@ usage() {
   echo "  haskell                             - install haskell"
   echo "  golang {version (optional)}         - install golang"
   echo "  node                                - install node"
+  echo "  dotnet                              - install dotnet SDK"
   echo "  chromium                            - install chromium"
   echo "  firefox {version (optional)}        - install firefox current from tar"
   echo "  code                                - install vscode"
@@ -548,6 +571,9 @@ main() {
       ;;
     "node")
       install_node
+      ;;
+    "dotnet")
+      install_dotnet
       ;;
     "chromium")
       install_chromium
