@@ -438,7 +438,7 @@ EOF
     code \
     --no-install-recommends
 
-  mkdir -p "$HOME/local/bin"
+  mkdir -p "$HOME/.local/bin"
   tee "$HOME/.local/bin/code" << 'EOF'
 #!/bin/sh
 exec /usr/bin/code --ozone-platform-hint=auto "$@"
