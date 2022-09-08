@@ -6,6 +6,8 @@ fish_variables
 .gnupg/*
 !.gnupg/gpg*.conf
 
+config/gtk-3.0
+!config/gtk-3.0/settings.ini
 config/nvim/plugged
 config/systemd/user/*
 !config/systemd/user/spotifyd.service
