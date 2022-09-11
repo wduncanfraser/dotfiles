@@ -32,8 +32,9 @@
     },
     "custom/weather": {
         "exec": "curl 'https://wttr.in/Chicago?format=1'",
-	      "format": "{}",
-        "interval": 600
+        "format": "{}",
+        "interval": 600,
+        "on-click": "gnome-weather"
     },
     "disk": {
         "format": "{free} ",

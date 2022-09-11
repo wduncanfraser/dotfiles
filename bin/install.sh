@@ -224,10 +224,13 @@ install_wm() {
     gnome-keyring \
     gnome-themes-standard \
     gnome-sushi \
+    gnome-weather \
     grimshot \
     gvfs-backends \
     imv \
     kanshi \
+    libayatana-appindicator1 \
+    libayatana-appindicator3-1 \
     libgdk-pixbuf2.0-bin \
     libgtk-3-bin \
     libnotify-bin \
@@ -385,7 +388,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="104.0.1"
+  firefox_version="104.0.2"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then

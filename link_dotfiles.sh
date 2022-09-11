@@ -29,6 +29,10 @@ wm() {
   # Mako doesn't like symlinks
   mkdir -p "${HOME}/.config/mako"
   ln -fv "${PWD}/config/mako/config" "${HOME}/.config/mako/config"
+
+  # Link desktop picture
+  mkdir -p "${HOME}/pictures"
+  ln -sfnv "${PWD}/pictures/nasa-CpHNKNRwXps-unsplash.jpg" "${HOME}/pictures/nasa-CpHNKNRwXps-unsplash.jpg"
 }
 
 mac() {

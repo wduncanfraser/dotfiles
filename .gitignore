@@ -11,3 +11,4 @@ config/gtk-3.0
 config/nvim/plugged
 config/systemd/user/*
 !config/systemd/user/spotifyd.service
+config/sway/config.d/99*

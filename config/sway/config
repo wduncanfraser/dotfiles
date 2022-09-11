@@ -57,9 +57,6 @@ exec nm-applet --indicator
 # Bluetooth
 exec blueman-applet
 
-# DBUS for GTK and Screen Sharing
-exec dbus-update-activation-environment --systemd DISPAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
-
 # Kanshi for display hotplug
 exec_always kanshi >/tmp/kanshi.log 2>&1
 
@@ -262,13 +259,13 @@ mode notifications {
 }
 
 ## Window settings
-for_window [class="^Steam$"] floating enable
 for_window [class="^Code" title="Visual Studio Code"] layout tabbed
 for_window [app_id="^firefox$"] layout tabbed
 for_window [app_id="firefox" title="Picture-in-Picture"] {
     floating enable
     sticky enable
 }
+for_window [class="^Steam$"] floating enable
 for_window [app_id="zoom"] floating enable
 for_window [app_id="zoom" title="Zoom Meeting(.*)?"] floating disable, inhibit_idle open
 
@@ -284,4 +281,4 @@ client.focused_inactive $bg $bg $yellow $blue $bg
 client.unfocused        $bg $bg $yellow $blue $bg
 client.urgent           $red $red $fg $red $red
 
-include /etc/sway/config.d/*
+include ${HOME}/.config/sway/config.d/*
