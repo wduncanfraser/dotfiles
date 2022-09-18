@@ -76,7 +76,7 @@ base() {
     dnsutils \
     file \
     findutils \
-    fish \
+    fish/bullseye-backports \
     fuse \
     gawk \
     g++-multilib \
