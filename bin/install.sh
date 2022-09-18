@@ -235,7 +235,7 @@ install_wm() {
     libgtk-3-bin \
     libnotify-bin \
     libsixel-bin \
-    libspa-0.2-bluetooth \
+    libspa-0.2-bluetooth/bullseye-backports \
     mako-notifier \
     mpv \
     nautilus \
@@ -243,9 +243,10 @@ install_wm() {
     network-manager \
     network-manager-gnome \
     pinentry-gnome3 \
-    pipewire \
-    pipewire-audio-client-libraries \
-    pipewire-pulse \
+    pipewire/bullseye-backports \
+    pipewire-alsa/bullseye-backports \
+    pipewire-jack/bullseye-backports \
+    pipewire-pulse/bullseye-backports \
     playerctl \
     poppler-data \
     pulseaudio-utils \
@@ -259,7 +260,7 @@ install_wm() {
     usbmuxd \
     waybar \
     wev \
-    wireplumber \
+    wireplumber/bullseye-backports \
     wl-clipboard \
     wofi \
     xdg-desktop-portal-gtk \
