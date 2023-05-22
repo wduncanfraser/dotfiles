@@ -219,7 +219,6 @@ install_wm() {
     fonts-stix \
     fonts-symbola \
     foot \
-    fuse \
     gir1.2-gtksource-4 \
     gnome-keyring \
     gnome-themes-standard \
@@ -234,6 +233,7 @@ install_wm() {
     libgdk-pixbuf2.0-bin \
     libgtk-3-bin \
     libnotify-bin \
+    libpipewire-0.3-common/bullseye-backports \
     libsixel-bin \
     libspa-0.2-bluetooth/bullseye-backports \
     mako-notifier \
@@ -255,6 +255,7 @@ install_wm() {
     remmina-plugin-rdp \
     remmina-plugin-vnc \
     remmina-plugin-secret \
+    rtkit \
     seahorse \
     seahorse-nautilus \
     usbmuxd \
@@ -295,32 +296,27 @@ install_docker() {
     --no-install-recommends
 }
 
-install_rust() {
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+install_kubectl() {
+  version=$(curl -L -s https://dl.k8s.io/release/stable.txt)
+  path="/usr/local/bin/kubectl"
 
-  rustup component add rust-src
+  curl -fsSL "https://dl.k8s.io/release/${version}/bin/linux/amd64/kubectl" | sudo dd of=$path
+
+  sudo chmod 0755 $path
+  sudo chown root:root $path
 }
 
-install_haskell() {
+# Languages/SDKs
+install_dotnet() {
+  TEMP_DEB="$(mktemp)"
+  wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O "$TEMP_DEB"
+  sudo dpkg -i "$TEMP_DEB"
+  rm -f "$TEMP_DEB"
+
   sudo apt update || true
-
   sudo apt install -y \
-    libffi-dev \
-    libffi7 \
-    libgmp-dev \
-    libgmp10 \
-    libncurses-dev \
-    libncurses5 \
-    libtinfo5 \
+    dotnet-sdk-6.0 \
     --no-install-recommends
-
-  # Project deps (XZ, SHA1, etc)
-  sudo apt install -y \
-    liblzma-dev \
-    zlib1g-dev \
-    --no-install-recommends
-
-  curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 }
 
 install_golang() {
@@ -345,6 +341,35 @@ install_golang() {
   curl -sSL "https://golang.org/dl/go${GO_VERSION}.${kernel}-amd64.tar.gz" | sudo tar -v -C /usr/local -xz
 }
 
+install_haskell() {
+  sudo apt update || true
+
+  sudo apt install -y \
+    libffi-dev \
+    libffi7 \
+    libgmp-dev \
+    libgmp10 \
+    libncurses-dev \
+    libncurses5 \
+    libtinfo5 \
+    --no-install-recommends
+
+  # Project deps (XZ, SHA1, etc)
+  sudo apt install -y \
+    liblzma-dev \
+    zlib1g-dev \
+    --no-install-recommends
+
+  curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+}
+
+install_jdk() {
+  sudo apt update || true
+  sudo apt install -y \
+    openjdk-17-jdk-headless \
+    --no-install-recommends
+}
+
 install_node() {
   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 
@@ -367,69 +392,13 @@ EOF
     --no-install-recommends
 }
 
-install_dotnet() {
-  TEMP_DEB="$(mktemp)"
-  wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O "$TEMP_DEB"
-  sudo dpkg -i "$TEMP_DEB"
-  rm -f "$TEMP_DEB"
+install_rust() {
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-  sudo apt update || true
-  sudo apt install -y \
-    dotnet-sdk-6.0 \
-    --no-install-recommends
+  rustup component add rust-src
 }
 
-install_firefox() {
-  sudo apt update || true
-
-  sudo apt install -y \
-    libdbus-glib-1-2 \
-    libgtk-3-0 \
-    libxtst6 \
-    --no-install-recommends
-
-  firefox_path=/opt/firefox
-  firefox_version="104.0.2"
-
-  # if we are passing the version
-  if [[ -n "$1" ]]; then
-    firefox_version=$1
-  fi
-
-  # purge old src
-  if [[ -d "$firefox_path" ]]; then
-    sudo rm -rf "$firefox_path"
-  fi
-
-  curl -fsSL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$firefox_version/linux-x86_64/en-US/firefox-$firefox_version.tar.bz2" | sudo tar -v -C /opt -xj
-
-  sudo mkdir -p /usr/local/share/applications
-  sudo tee /usr/local/share/applications/firefox-stable.desktop << EOF
-[Desktop Entry]
-Name=Firefox
-Comment=Web Browser
-Exec=env MOZ_ENABLE_WAYLAND=1 $firefox_path/firefox %u
-Terminal=false
-Type=Application
-Icon=$firefox_path/browser/chrome/icons/default/default128.png
-Categories=Network;WebBrowser;
-MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
-StartupNotify=true
-EOF
-
-  sudo ln -svf "$firefox_path/firefox" /usr/local/bin/firefox
-  sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser $firefox_path/firefox 200 && sudo update-alternatives --set x-www-browser $firefox_path/firefox
-}
-
-install_chromium() {
-  sudo apt update || true
-
-  sudo apt install -y \
-    chromium \
-    chromium-sandbox \
-    --no-install-recommends
-}
-
+# Editors
 install_code() {
   curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg
 
@@ -495,21 +464,82 @@ install_nvim() {
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 }
 
-install_spotify() {
-  spotifyd_version="0.3.3"
-  spotifytui_version="0.25.0"
 
-  if [[ -d /usr/local/bin/spotifyd ]]; then
-    sudo rm -f /usr/local/bin/spotifyd
+# Web
+install_chromium() {
+  sudo apt update || true
+
+  sudo apt install -y \
+    chromium \
+    chromium-sandbox \
+    --no-install-recommends
+}
+
+install_firefox() {
+  sudo apt update || true
+
+  sudo apt install -y \
+    libdbus-glib-1-2 \
+    libgtk-3-0 \
+    libxtst6 \
+    --no-install-recommends
+
+  firefox_path=/opt/firefox
+  firefox_version="113.0.1"
+
+  # if we are passing the version
+  if [[ -n "$1" ]]; then
+    firefox_version=$1
+  fi
+
+  # purge old src
+  if [[ -d "$firefox_path" ]]; then
+    sudo rm -rf "$firefox_path"
+  fi
+
+  curl -fsSL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$firefox_version/linux-x86_64/en-US/firefox-$firefox_version.tar.bz2" | sudo tar -v -C /opt -xj
+
+  sudo mkdir -p /usr/local/share/applications
+  sudo tee /usr/local/share/applications/firefox-stable.desktop << EOF
+[Desktop Entry]
+Name=Firefox
+Comment=Web Browser
+Exec=env MOZ_ENABLE_WAYLAND=1 $firefox_path/firefox %u
+Terminal=false
+Type=Application
+Icon=$firefox_path/browser/chrome/icons/default/default128.png
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+EOF
+
+  sudo ln -svf "$firefox_path/firefox" /usr/local/bin/firefox
+  sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser $firefox_path/firefox 200 && sudo update-alternatives --set x-www-browser $firefox_path/firefox
+}
+
+install_spotify() {
+  spotifyd_version="0.3.5"
+  spotifyd_path="/usr/local/bin/spotifyd"
+  spotifytui_version="0.25.0"
+  spotifytui_path="/usr/local/bin/spt"
+
+  if [[ -d $spotifyd_path ]]; then
+    sudo rm -f $spotifyd_path
   fi
 
   curl -fsSL "https://github.com/Spotifyd/spotifyd/releases/download/v$spotifyd_version/spotifyd-linux-default.tar.gz" | sudo tar -v -C /usr/local/bin -xz
 
-  if [[ -d /usr/local/bin/spt ]]; then
-    sudo rm -f /usr/local/bin/spt
+  sudo chown root:root $spotifyd_path
+  sudo chmod 0755 $spotifyd_path
+
+  if [[ -d $spotifytui_path ]]; then
+    sudo rm -f $spotifytui_path
   fi
 
   curl -fsSL "https://github.com/Rigellute/spotify-tui/releases/download/v$spotifytui_version/spotify-tui-linux.tar.gz" | sudo tar -v -C /usr/local/bin -xz
+
+  sudo chown root:root $spotifytui_path
+  sudo chmod 0755 $spotifytui_path
 
   systemctl --user enable spotifyd.service
   systemctl --user start spotifyd.service
@@ -523,15 +553,20 @@ usage() {
   echo "  graphics {intel, optimus, vmware}   - install graphics drivers"
   echo "  wm                                  - install window manager/desktop pkgs"
   echo "  docker                              - install docker from official repos"
-  echo "  rust                                - install rust"
-  echo "  haskell                             - install haskell"
-  echo "  golang {version (optional)}         - install golang"
-  echo "  node                                - install node"
+  echo "  kubectl                             - install kubectl"
+  echo "(Languages/SDKs)"
   echo "  dotnet                              - install dotnet SDK"
-  echo "  chromium                            - install chromium"
-  echo "  firefox {version (optional)}        - install firefox current from tar"
+  echo "  golang {version (optional)}         - install golang"
+  echo "  haskell                             - install haskell"
+  echo "  jdk                                 - install openjdk"
+  echo "  node                                - install node"
+  echo "  rust                                - install rust"
+  echo "(Editors)"
   echo "  code                                - install vscode"
   echo "  nvim                                - install nvim and config"
+  echo "(Web)"
+  echo "  chromium                            - install chromium"
+  echo "  firefox {version (optional)}        - install firefox current from tar"
   echo "  spotify                             - install spotifyd and spotify-tui"
 }
 
@@ -564,32 +599,41 @@ main() {
     "docker")
       install_docker
       ;;
-    "rust")
-      install_rust
+    "kubectl")
+      install_kubectl
       ;;
-    "haskell")
-      install_haskell
+    # Languages/SDKS
+    "dotnet")
+      install_dotnet
       ;;
     "golang")
       install_golang "$2"
       ;;
+    "haskell")
+      install_haskell
+      ;;
+    "jdk")
+      install_jdk
+      ;;
     "node")
       install_node
       ;;
-    "dotnet")
-      install_dotnet
+    "rust")
+      install_rust
       ;;
-    "chromium")
-      install_chromium
-      ;;
-    "firefox")
-      install_firefox "$2"
-      ;;
+    # Editors
     "code")
       install_code
       ;;
     "nvim")
       install_nvim
+      ;;
+    # Web
+    "chromium")
+      install_chromium
+      ;;
+    "firefox")
+      install_firefox "$2"
       ;;
     "spotify")
       install_spotify
