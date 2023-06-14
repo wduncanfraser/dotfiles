@@ -219,7 +219,7 @@ install_wm() {
     foot \
     gir1.2-gtksource-4 \
     gnome-keyring \
-    gnome-themes-standard \
+    gnome-themes-extra \
     gnome-sushi \
     gnome-weather \
     grimshot \
@@ -344,7 +344,7 @@ install_haskell() {
 
   sudo apt install -y \
     libffi-dev \
-    libffi7 \
+    libffi8 \
     libgmp-dev \
     libgmp10 \
     libncurses-dev \
