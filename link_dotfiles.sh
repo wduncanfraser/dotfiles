@@ -20,7 +20,7 @@ base() {
 }
 
 wm() {
-  config_dirs=("fontconfig"  "foot" "gtk-3.0" "spotifyd" "sway" "swaylock" "systemd" "waybar" "wofi")
+  config_dirs=("fontconfig"  "foot" "gtk-3.0" "gtk-4.0" "spotifyd" "sway" "swaylock" "systemd" "waybar" "wofi")
 
   for val in ${config_dirs[*]}; do
     ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"

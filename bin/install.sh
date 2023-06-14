@@ -44,15 +44,13 @@ setup_debian_sources() {
     --no-install-recommends
 
   tee /etc/apt/sources.list << EOF
-deb https://deb.debian.org/debian/ bullseye main contrib non-free
-deb-src https://deb.debian.org/debian/ bullseye main contrib non-free
+deb https://deb.debian.org/debian/ bookworm main contrib non-free-firmware non-free
+deb-src https://deb.debian.org/debian/ bookworm main contrib non-free-firmware non-free
 
-deb https://security.debian.org/debian-security bullseye-security main contrib non-free
-deb-src https://security.debian.org/debian-security bullseye-security main contrib non-free
+deb https://security.debian.org/debian-security bookworm-security main contrib non-free-firmware non-free
+deb-src https://security.debian.org/debian-security bookworm-security main contrib non-free-firmware non-free
 
-deb https://deb.debian.org/debian/ bullseye-backports main contrib non-free
-
-deb [allow-insecure=yes] https://discovery-deb.nyc3.digitaloceanspaces.com/debian bullseye-bp main
+deb https://deb.debian.org/debian/ bookworm-backports main contrib non-free-firmware non-free
 EOF
 }
 
@@ -76,13 +74,13 @@ base() {
     dnsutils \
     file \
     findutils \
-    fish/bullseye-backports \
-    fuse \
+    fish \
+    fuse3 \
     gawk \
     g++-multilib \
     gcc-multilib \
     genius \
-    git/bullseye-backports \
+    git \
     git-extras \
     gnupg \
     gpg-agent \
@@ -233,9 +231,9 @@ install_wm() {
     libgdk-pixbuf2.0-bin \
     libgtk-3-bin \
     libnotify-bin \
-    libpipewire-0.3-common/bullseye-backports \
+    libpipewire-0.3-common \
     libsixel-bin \
-    libspa-0.2-bluetooth/bullseye-backports \
+    libspa-0.2-bluetooth \
     mako-notifier \
     mpv \
     nautilus \
@@ -243,10 +241,10 @@ install_wm() {
     network-manager \
     network-manager-gnome \
     pinentry-gnome3 \
-    pipewire/bullseye-backports \
-    pipewire-alsa/bullseye-backports \
-    pipewire-jack/bullseye-backports \
-    pipewire-pulse/bullseye-backports \
+    pipewire \
+    pipewire-alsa \
+    pipewire-jack \
+    pipewire-pulse \
     playerctl \
     poppler-data \
     pulseaudio-utils \
@@ -261,7 +259,7 @@ install_wm() {
     usbmuxd \
     waybar \
     wev \
-    wireplumber/bullseye-backports \
+    wireplumber \
     wl-clipboard \
     wofi \
     xdg-desktop-portal-gtk \
@@ -371,22 +369,8 @@ install_jdk() {
 }
 
 install_node() {
-  curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
-  # Replace with the branch of Node.js or io.js you want to install: node_6.x, node_8.x, etc...
-  VERSION=node_16.x
-  # The below command will set this correctly, but if lsb_release isn't available, you can set it manually:
-  # - For Debian distributions: jessie, sid, etc...
-  # - For Ubuntu distributions: xenial, bionic, etc...
-  # - For Debian or Ubuntu derived distributions your best option is to use the codename corresponding to the upstream release your distribution is based off. This is an advanced scenario and unsupported if your distribution is not listed as supported per earlier in this README.
-  DISTRO="$(lsb_release -s -c)"
-
-  sudo tee /etc/apt/sources.list.d/nodesource.list << EOF
-deb https://deb.nodesource.com/$VERSION $DISTRO main
-deb-src https://deb.nodesource.com/$VERSION $DISTRO main
-EOF
-
-  sudo apt update || true
   sudo apt install -y \
     nodejs \
     --no-install-recommends
@@ -442,7 +426,7 @@ EOF
 }
 
 install_nvim() {
-  nvim_version="0.7.2"
+  nvim_version="0.9.1"
   nvim_path=/opt/nvim
   nvim_image=$nvim_path/nvim.appimage
 
@@ -485,7 +469,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="113.0.1"
+  firefox_version="114.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
