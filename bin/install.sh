@@ -173,7 +173,7 @@ install_graphics() {
       pkgs+=( mesa-vulkan-drivers vulkan-tools intel-media-va-driver-non-free  )
       ;;
     "optimus")
-      pkgs+=( bumblebee-nvidia bbswitch-dkms primus-nvidia primus-vk-nvidia linux-headers-generic )
+      pkgs+=( nvidia-driver )
       ;;
     "vmware")
       pkgs+=( open-vm-tools )
@@ -267,10 +267,6 @@ install_wm() {
     xdg-utils \
     zathura \
     --no-install-recommends
-
-  # https://wiki.debian.org/PipeWire#Debian_Testing.2FUnstablehttps://wiki.debian.org/PipeWire#Debian_Testing.2FUnstable
-  # Setup Pipewire for ALSA
-  sudo cp /usr/share/doc/pipewire/examples/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d/
 
   # start and enable pipewire
   systemctl --user daemon-reload
