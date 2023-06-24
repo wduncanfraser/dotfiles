@@ -187,13 +187,13 @@ install_graphics() {
   apt update || true
   apt -y upgrade
 
-  apt install -y --allow-unauthenticated "${pkgs[@]}" --no-install-recommends
+  apt install -y "${pkgs[@]}" --no-install-recommends
 }
 
 install_wm() {
   sudo apt update || true
 
-  sudo apt install -y --allow-unauthenticated \
+  sudo apt install -y \
     sway \
     swayidle \
     swaylock \
@@ -218,6 +218,7 @@ install_wm() {
     fonts-symbola \
     foot \
     gir1.2-gtksource-4 \
+    gnome-calculator \
     gnome-keyring \
     gnome-themes-extra \
     gnome-sushi \
@@ -271,6 +272,36 @@ install_wm() {
   # start and enable pipewire
   systemctl --user daemon-reload
   systemctl --user --now enable pipewire pipewire-pulse wireplumber.service
+
+  # Start and enable playerctld
+  systemctl --user --now enable playerctld
+}
+
+install_mpd() {
+  mpd_mpris_version="0.4.0-2"
+  mpd_mpris_path="/usr/local/bin/mpd-mpris"
+
+  sudo apt update || true
+  sudo apt install -y \
+    mpd \
+    ymuse \
+    --no-install-recommends
+
+  if [[ -d $mpd_mpris_path ]]; then
+    sudo rm -f $mpd_mpris_path
+  fi
+
+  curl -fsSL "https://github.com/natsukagami/mpd-mpris/releases/download/v${mpd_mpris_version}/mpd-mpris_${mpd_mpris_version}_linux_amd64.tar.gz" | sudo tar -v -C /usr/local/bin -xz mpd-mpris
+
+  sudo chown root:root $mpd_mpris_path
+  sudo chmod 0755 $mpd_mpris_path
+
+  # Setup local dirs
+  mkdir -p "$HOME/.local/state/mpd"
+
+  # Start and enable services
+  systemctl --user daemon-reload
+  systemctl --user --now enable mpd mpd-mpris
 }
 
 install_docker() {
@@ -465,7 +496,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="114.0.1"
+  firefox_version="114.0.2"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -498,31 +529,16 @@ EOF
 }
 
 install_spotify() {
-  spotifyd_version="0.3.5"
-  spotifyd_path="/usr/local/bin/spotifyd"
-  spotifytui_version="0.25.0"
-  spotifytui_path="/usr/local/bin/spt"
+  # Workaround for xdg-desktop-menu bug. xdg-desktop-menu: No writable system menu directory found.
+  sudo mkdir -p /usr/share/desktop-directories
 
-  if [[ -d $spotifyd_path ]]; then
-    sudo rm -f $spotifyd_path
-  fi
+  curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+  echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 
-  curl -fsSL "https://github.com/Spotifyd/spotifyd/releases/download/v$spotifyd_version/spotifyd-linux-default.tar.gz" | sudo tar -v -C /usr/local/bin -xz
-
-  sudo chown root:root $spotifyd_path
-  sudo chmod 0755 $spotifyd_path
-
-  if [[ -d $spotifytui_path ]]; then
-    sudo rm -f $spotifytui_path
-  fi
-
-  curl -fsSL "https://github.com/Rigellute/spotify-tui/releases/download/v$spotifytui_version/spotify-tui-linux.tar.gz" | sudo tar -v -C /usr/local/bin -xz
-
-  sudo chown root:root $spotifytui_path
-  sudo chmod 0755 $spotifytui_path
-
-  systemctl --user enable spotifyd.service
-  systemctl --user start spotifyd.service
+  sudo apt update || true
+  sudo apt install -y \
+    spotify-client \
+    --no-install-recommends
 }
 
 usage() {
@@ -532,6 +548,7 @@ usage() {
   echo "  physical {amd, intel}               - setup firmware, etc. Things we need on a physical machine, but not VM/WSL"
   echo "  graphics {intel, optimus, vmware}   - install graphics drivers"
   echo "  wm                                  - install window manager/desktop pkgs"
+  echo "  mpd                                 - install mpd/mpd"
   echo "  docker                              - install docker from official repos"
   echo "  kubectl                             - install kubectl"
   echo "(Languages/SDKs)"
@@ -547,7 +564,7 @@ usage() {
   echo "(Web)"
   echo "  chromium                            - install chromium"
   echo "  firefox {version (optional)}        - install firefox current from tar"
-  echo "  spotify                             - install spotifyd and spotify-tui"
+  echo "  spotify                             - install spotify"
 }
 
 main() {
@@ -575,6 +592,9 @@ main() {
       ;;
     "wm")
       install_wm
+      ;;
+    "mpd")
+      install_mpd
       ;;
     "docker")
       install_docker

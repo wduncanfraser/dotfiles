@@ -10,5 +10,6 @@ config/gtk-3.0
 !config/gtk-3.0/settings.ini
 config/nvim/plugged
 config/systemd/user/*
-!config/systemd/user/spotifyd.service
+!config/systemd/user/mpd-mpris.service
+!config/systemd/user/playerctld.service
 config/sway/config.d/99*
