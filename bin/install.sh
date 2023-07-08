@@ -72,6 +72,7 @@ base() {
     curl \
     direnv \
     dnsutils \
+    fd-find \
     file \
     findutils \
     fish \
@@ -104,8 +105,8 @@ base() {
     psmisc \
     pv \
     ranger \
+    ripgrep \
     shellcheck \
-    silversearcher-ag \
     strace \
     sudo \
     sysstat \
@@ -169,6 +170,9 @@ install_graphics() {
   local pkgs=( mesa-utils xwayland )
 
   case $system in
+    "amd")
+      pkgs+=( mesa-vulkan-drivers vulkan-tools mesa-va-drivers firmware-amd-graphics  )
+      ;;
     "intel")
       pkgs+=( mesa-vulkan-drivers vulkan-tools intel-media-va-driver-non-free  )
       ;;
@@ -179,7 +183,7 @@ install_graphics() {
       pkgs+=( open-vm-tools )
       ;;
     *)
-      echo "You need to specify whether it's intel, optimus, or vmware gpu"
+      echo "You need to specify whether it's amd, intel, optimus, or vmware gpu"
       exit 1
       ;;
   esac
@@ -496,7 +500,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="114.0.2"
+  firefox_version="115.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
