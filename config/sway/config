@@ -81,6 +81,16 @@ input "1739:0:Synaptics_TM3418-002" {
     middle_emulation disabled
 }
 
+input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad" {
+    click_method clickfinger
+    dwt enabled
+    tap enabled
+    tap_button_map lrm
+    scroll_method two_finger
+    natural_scroll enabled
+    middle_emulation disabled
+}
+
 input "type:keyboard" {
     xkb_options ctrl:nocaps
 }
