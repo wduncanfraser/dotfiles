@@ -13,7 +13,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
 -- Yank into system clipboard
-vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 -- No Ex mode
@@ -24,3 +24,10 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 -- Make file executable
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+
+-- Swap to last buffer
+vim.keymap.set('n', '<leader><leader>', '<cmd> :b#<CR>', {})
+
+-- netrw
+vim.keymap.set('n', '<leader>e', '<cmd> :Ex<CR>', {})
+

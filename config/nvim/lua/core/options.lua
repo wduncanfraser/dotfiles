@@ -36,4 +36,5 @@ vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 -- Update time
-vim.opt.updatetime = 500
+vim.opt.updatetime = 250
+

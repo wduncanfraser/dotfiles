@@ -68,9 +68,9 @@ return {
           omit = { '<F2>', '<F3>', '<F4>' },
         })
 
-        vim.keymap.set('n', '<leader>F', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
-        vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>')
-        vim.keymap.set('n', '<leader>ga', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+        vim.keymap.set('n', '<leader>F', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', { desc = 'LSP: [F]ormat' })
+        vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', { desc = 'LSP: [R]e[n]ame' })
+        vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', { desc = 'LSP: [C]ode [a]ctions' })
         vim.keymap.set('n', '<leader>fr', '<cmd>Telescope lsp_references<cr>', { buffer = true })
       end)
 

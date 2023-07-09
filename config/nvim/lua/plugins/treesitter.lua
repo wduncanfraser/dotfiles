@@ -19,6 +19,7 @@ return {
         "terraform",
         "toml",
         "typescript",
+        "tsx",
         "vim",
         "vimdoc",
       },

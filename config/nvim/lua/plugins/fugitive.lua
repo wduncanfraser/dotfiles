@@ -3,7 +3,7 @@ local M = {
 }
 
 function M.config()
-  vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+  vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = 'Fugitive: [G]it [s]tatus' })
 end
 
 return M
