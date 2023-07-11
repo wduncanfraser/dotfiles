@@ -7,6 +7,10 @@ set -gx PATH /usr/local/go/bin $PATH
 # Rust env
 set -gx PATH $HOME/.cargo/bin $PATH
 
+# Deno env
+set -x DENO_INSTALL $HOME/.deno
+set -gx PATH $DENO_INSTALL/bin $PATH
+
 # ghcup-env
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
 test -f $HOME/.ghcup/env ; and set -gx PATH $HOME/.cabal/bin $HOME/.ghcup/bin $PATH

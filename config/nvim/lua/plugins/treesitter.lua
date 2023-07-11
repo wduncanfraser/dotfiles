@@ -12,6 +12,7 @@ return {
         "json",
         "kotlin",
         "lua",
+        "markdown",
         "proto",
         "query",
         "rust",

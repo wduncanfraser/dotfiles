@@ -279,6 +279,7 @@ for_window [class="^Steam$"] floating enable
 for_window [app_id="zoom"] floating enable
 for_window [app_id="zoom" title="Zoom Meeting(.*)?"] floating disable, inhibit_idle open
 for_window [app_id="protonvpn"] floating enable
+no_focus [title="^Peek preview$"]
 
 # Status Bar:
 bar {

@@ -336,6 +336,11 @@ install_kubectl() {
 }
 
 # Languages/SDKs
+install_deno() {
+  # TODO: Specific version needed for nvim peek plugin
+  curl -fsSL https://deno.land/install.sh | sh -s v1.33.1
+}
+
 install_dotnet() {
   TEMP_DEB="$(mktemp)"
   wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O "$TEMP_DEB"
@@ -475,8 +480,13 @@ install_nvim() {
   sudo ln -svf $nvim_image /usr/local/bin/nvim
   sudo ln -svf $nvim_image /usr/local/bin/vim
 
-  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  # Install dependencies for plugins
+  sudo apt update || true
+
+  # Peek (Markdown preview)
+  sudo apt install -y \
+    libwebkit2gtk-4.0-37 \
+    --no-install-recommends
 }
 
 
@@ -556,6 +566,7 @@ usage() {
   echo "  docker                                  - install docker from official repos"
   echo "  kubectl                                 - install kubectl"
   echo "(Languages/SDKs)"
+  echo "  deno                                    - install deno"
   echo "  dotnet                                  - install dotnet SDK"
   echo "  golang {version (optional)}             - install golang"
   echo "  haskell                                 - install haskell"
@@ -606,7 +617,10 @@ main() {
     "kubectl")
       install_kubectl
       ;;
-    # Languages/SDKS
+    # Languages/SDKs
+    "deno")
+      install_deno
+      ;;
     "dotnet")
       install_dotnet
       ;;
