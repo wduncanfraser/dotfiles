@@ -17,6 +17,7 @@ return {
         "query",
         "rust",
         "sql",
+        "svelte",
         "terraform",
         "toml",
         "typescript",

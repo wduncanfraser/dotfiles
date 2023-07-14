@@ -11,6 +11,13 @@ set -gx PATH $HOME/.cargo/bin $PATH
 set -x DENO_INSTALL $HOME/.deno
 set -gx PATH $DENO_INSTALL/bin $PATH
 
+# pnpm
+set -gx PNPM_HOME $HOME/.local/share/pnpm
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
+
 # ghcup-env
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
 test -f $HOME/.ghcup/env ; and set -gx PATH $HOME/.cabal/bin $HOME/.ghcup/bin $PATH
@@ -39,3 +46,4 @@ end
 set --universal pure_separate_prompt_on_error true
 set --universal pure_show_subsecond_command_duration true
 set --universal pure_threshold_command_duration 1
+

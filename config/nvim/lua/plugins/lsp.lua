@@ -80,6 +80,7 @@ return {
       lsp.ensure_installed({
         'lua_ls',
         'rust_analyzer',
+        'svelte',
         'tsserver',
       })
 
