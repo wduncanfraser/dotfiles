@@ -8,6 +8,9 @@ fish_variables
 
 config/gtk-3.0
 !config/gtk-3.0/settings.ini
+config/gtk-4.0
+!config/gtk-4.0/settings.ini
+!config/gtk-4.0/gtk.css
 config/nvim/plugged
 config/systemd/user/*
 !config/systemd/user/mpd-mpris.service

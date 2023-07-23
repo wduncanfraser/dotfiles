@@ -3,7 +3,7 @@ return {
   dependencies = { 'WhoIsSethDaniel/lualine-lsp-progress.nvim' },
   opts = {
     options = {
-      icons_enabled = false,
+      icons_enabled = true,
       theme = 'gruvbox-baby',
     },
     sections = {

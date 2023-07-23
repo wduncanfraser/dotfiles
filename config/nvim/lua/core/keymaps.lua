@@ -29,5 +29,5 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 vim.keymap.set('n', '<leader><leader>', '<cmd> :b#<CR>', {})
 
 -- netrw
-vim.keymap.set('n', '<leader>e', '<cmd> :Ex<CR>', {})
+-- vim.keymap.set('n', '<leader>e', '<cmd> :Ex<CR>', {})
 
