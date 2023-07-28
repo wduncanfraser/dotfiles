@@ -32,6 +32,14 @@ return {
           },
         },
       },
+      filesystem = {
+        hijack_netrw_behavior = "disabled"
+      },
+      window = {
+        mappings = {
+          ["<space>"] = "none",
+        },
+      },
     })
 
     vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle<CR>')

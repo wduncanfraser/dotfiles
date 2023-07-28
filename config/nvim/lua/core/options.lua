@@ -3,6 +3,11 @@ vim.keymap.set('', '<Space>', '<Nop>')
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Turn off builtin plugins I do not use
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrwSettings = 1
+
 -- Cursor
 -- vim.opt.guicursor = 'i:block-blinkwait175-blinkoff150-blinkon175'
 

@@ -1,12 +1,8 @@
 return {
+  -- Mason
   {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
-    lazy = true,
-    config = function()
-      -- Setup lsp-zero itself
-      require('lsp-zero').preset({})
-    end
+    'williamboman/mason.nvim',
+    config = true
   },
   -- Autocompletion
   {
@@ -18,30 +14,55 @@ return {
       { 'L3MON4D3/LuaSnip' },
     },
     config = function()
-      require('lsp-zero.cmp').extend()
-
-      -- And you can configure cmp even more, if you want to.
       local cmp = require('cmp')
-      local cmp_action = require('lsp-zero').cmp_action()
-
+      local cmp_select = { behavior = cmp.SelectBehavior.Select }
+      local luasnip = require('luasnip')
       cmp.setup({
         sources = {
           { name = 'path' },
           { name = 'nvim_lsp' },
+          { name = "crates" },
           { name = 'buffer',  keyword_length = 3 },
         },
         window = {
           completion = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
         },
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end
+        },
         mapping = {
+          ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+          ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+          ['<C-d>'] = cmp.mapping.scroll_docs(8),
+          ['<C-u>'] = cmp.mapping.scroll_docs(-8),
+          ['<C-Space>'] = cmp.mapping.complete {},
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          ['<Tab>'] = cmp_action.tab_complete(),
-          ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item(cmp_select)
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item(cmp_select)
+            elseif luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
         }
       })
     end
   },
+  -- LSP
   {
     'neovim/nvim-lspconfig',
     cmd = 'LspInfo',
@@ -49,42 +70,92 @@ return {
     dependencies = {
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'williamboman/mason-lspconfig.nvim' },
-      {
-        'williamboman/mason.nvim',
-        build = function()
-          pcall(vim.cmd, 'MasonUpdate')
-        end,
-      },
-      { 'folke/neodev.nvim', }
+      { 'folke/neodev.nvim' }
     },
     config = function()
+      --  This function gets run when an LSP connects to a particular buffer.
+      local on_attach = function(_, bufnr)
+        local nmap = function(keys, func, desc)
+          if desc then
+            desc = 'LSP: ' .. desc
+          end
+
+          vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+        end
+
+        nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+        nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+        nmap('<leader>F', function()
+          vim.lsp.buf.format({ async = true })
+        end, '[F]ormat')
+
+        nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+        nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+        nmap('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+        nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+        nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+        nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+
+        -- See `:help K` for why this keymap
+        nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+        nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+      end
+
       require('neodev').setup({})
 
-      -- LSP
-      local lsp = require('lsp-zero')
-      lsp.on_attach(function(client, bufnr)
-        lsp.default_keymaps({
-          buffer = bufnr,
-          omit = { '<F2>', '<F3>', '<F4>' },
-        })
+      -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-        vim.keymap.set('n', '<leader>F', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', { desc = 'LSP: [F]ormat' })
-        vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', { desc = 'LSP: [R]e[n]ame' })
-        vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', { desc = 'LSP: [C]ode [a]ctions' })
-        vim.keymap.set('n', '<leader>fr', '<cmd>Telescope lsp_references<cr>', { buffer = true })
-      end)
+      -- Ensure the servers above are installed
+      local mason_lspconfig = require('mason-lspconfig')
 
-      -- Configure lua language server for neovim
-      require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+      mason_lspconfig.setup {
+        ensure_installed = {
+          "lua_ls",
+          "rust_analyzer",
+          "svelte",
+          "tsserver",
+        }
+      }
 
-      lsp.ensure_installed({
-        'lua_ls',
-        'rust_analyzer',
-        'svelte',
-        'tsserver',
+      mason_lspconfig.setup_handlers {
+        function(server_name) -- default handler
+          require("lspconfig")[server_name].setup {
+            capabilities = capabilities,
+            on_attach = on_attach,
+          }
+        end,
+        ["lua_ls"] = function()
+          require('lspconfig').lua_ls.setup {
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = {
+              Lua = {
+                diagnostics = {
+                  globals = { 'vim' }
+                },
+                workspace = {
+                  checkThirdParty = false
+                },
+                telemetry = {
+                  enable = false
+                },
+              }
+            }
+          }
+        end
+      }
+
+      -- Border for hover windows
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "rounded",
       })
 
-      lsp.setup()
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = "rounded",
+      })
     end
   }
 }

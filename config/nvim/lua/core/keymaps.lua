@@ -28,6 +28,7 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 -- Swap to last buffer
 vim.keymap.set('n', '<leader><leader>', '<cmd> :b#<CR>', {})
 
--- netrw
--- vim.keymap.set('n', '<leader>e', '<cmd> :Ex<CR>', {})
+-- Diagnostics
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 
