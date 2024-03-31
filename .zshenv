@@ -12,4 +12,3 @@ export ZDATADIR=${XDG_DATA_HOME}/zsh
 # where do you want to store your plugins?
 export ZPLUGINDIR=${ZDATADIR}/plugins
 
-
