@@ -1,0 +1,17 @@
+# Safe Actions
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
+
+# QoL Shell Aliases
+alias ls="ls --color=auto"
+alias ll="ls -lh"
+alias ack="ag"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias dev="cd ~/dev"
+alias imv="imv-wayland"
+
+# IP Addresses
+alias remoteip="dig +short myip.opendns.com @resolver1.opendns.com"

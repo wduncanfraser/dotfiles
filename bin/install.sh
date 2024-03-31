@@ -75,7 +75,6 @@ base() {
     fd-find \
     file \
     findutils \
-    fish \
     fuse3 \
     gawk \
     g++-multilib \
@@ -121,6 +120,7 @@ base() {
     wget \
     xz-utils \
     zip \
+    zsh \
     --no-install-recommends
 
   setup_sudo
@@ -139,7 +139,7 @@ setup_sudo() {
 }
 
 set_shell() {
-  chsh --shell /usr/bin/fish "$TARGET_USER"
+  chsh --shell /usr/bin/zsh "$TARGET_USER"
 }
 
 install_physical() {
@@ -355,7 +355,7 @@ install_dotnet() {
 
 install_golang() {
   export GO_VERSION
-  GO_VERSION=$(curl -sSL "https://golang.org/VERSION?m=text")
+  GO_VERSION=$(curl -sSL "https://go.dev/VERSION?m=text" | head -1)
   export GO_SRC=/usr/local/go
 
   # if we are passing the version
@@ -372,7 +372,7 @@ install_golang() {
   GO_VERSION=${GO_VERSION#go}
 
   kernel=$(uname -s | tr '[:upper:]' '[:lower:]')
-  curl -sSL "https://golang.org/dl/go${GO_VERSION}.${kernel}-amd64.tar.gz" | sudo tar -v -C /usr/local -xz
+  curl -sSL "https://go.dev/dl/go${GO_VERSION}.${kernel}-amd64.tar.gz" | sudo tar -v -C /usr/local -xz
 }
 
 install_haskell() {
@@ -397,15 +397,8 @@ install_haskell() {
   curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 }
 
-install_jdk() {
-  sudo apt update || true
-  sudo apt install -y \
-    openjdk-17-jdk-headless \
-    --no-install-recommends
-}
-
 install_node() {
-  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 
   sudo apt install -y \
     nodejs \
@@ -416,6 +409,12 @@ install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
   rustup component add rust-src
+}
+
+install_sdkman() {
+  curl -s "https://get.sdkman.io" | bash
+
+  source "$HOME/.sdkman/bin/sdkman-init.sh"
 }
 
 # Editors
@@ -462,7 +461,7 @@ EOF
 }
 
 install_nvim() {
-  nvim_version="0.9.1"
+  nvim_version="0.9.5"
   nvim_path=/opt/nvim
   nvim_image=$nvim_path/nvim.appimage
 
@@ -510,7 +509,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="115.0.2"
+  firefox_version="124.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -570,9 +569,9 @@ usage() {
   echo "  dotnet                                  - install dotnet SDK"
   echo "  golang {version (optional)}             - install golang"
   echo "  haskell                                 - install haskell"
-  echo "  jdk                                     - install openjdk"
   echo "  node                                    - install node"
   echo "  rust                                    - install rust"
+  echo "  sdkman                                  - install sdkman (jdk)"
   echo "(Editors)"
   echo "  code                                    - install vscode"
   echo "  nvim                                    - install nvim and config"
@@ -630,14 +629,14 @@ main() {
     "haskell")
       install_haskell
       ;;
-    "jdk")
-      install_jdk
-      ;;
     "node")
       install_node
       ;;
     "rust")
       install_rust
+      ;;
+    "sdkman")
+      install_sdkman
       ;;
     # Editors
     "code")

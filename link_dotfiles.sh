@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 base() {
-  config_dirs=("fish"  "nvim")
+  config_dirs=("nvim" "starship.toml")
 
   for val in ${config_dirs[*]}; do
     ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
@@ -16,7 +16,9 @@ base() {
 	#	ln -sfnv "${file}" "${HOME}/.gnupg/${f}"
 	#done
 
+  ln -sfnv "${PWD}/.aliases" "${HOME}/.aliases"
   ln -sfnv "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
+  ln -sfnv "${PWD}/.zshrc" "${HOME}/.zshrc"
 }
 
 wm() {
