@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 base() {
-  config_dirs=("nvim" "starship.toml")
+  config_dirs=("nvim" "starship.toml" "zsh")
 
   for val in ${config_dirs[*]}; do
     ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
@@ -18,7 +18,7 @@ base() {
 
   ln -sfnv "${PWD}/.aliases" "${HOME}/.aliases"
   ln -sfnv "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
-  ln -sfnv "${PWD}/.zshrc" "${HOME}/.zshrc"
+  ln -sfnv "${PWD}/.zshenv" "${HOME}/.zshenv"
 }
 
 wm() {
@@ -38,7 +38,7 @@ wm() {
 }
 
 mac() {
-  config_dirs=("alacritty" "fish"  "nvim")
+  config_dirs=("alacritty" "nvim" "starship.toml" "zsh")
 
   for val in ${config_dirs[*]}; do
     ln -sfnv "${PWD}/config/${val}" "${HOME}/.config/${val}"
@@ -47,7 +47,9 @@ mac() {
   #mkdir -p "${HOME}/.gnupg"
   #ln -sfnv "${PWD}/.gnupg/gpg-agent.conf" "${HOME}/.gnupg/gpg-agent.conf"
 
+  ln -sfnv "${PWD}/.aliases" "${HOME}/.aliases"
   ln -sfnv "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
+  ln -sfnv "${PWD}/.zshenv" "${HOME}/.zshenv"
 }
 
 usage() {

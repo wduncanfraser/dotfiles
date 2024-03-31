@@ -13,5 +13,3 @@ alias ....="cd ../../.."
 alias dev="cd ~/dev"
 alias imv="imv-wayland"
 
-# IP Addresses
-alias remoteip="dig +short myip.opendns.com @resolver1.opendns.com"

@@ -125,6 +125,7 @@ base() {
 
   setup_sudo
   set_shell
+  install_starship
 
   apt autoremove -y
   apt autoclean -y
@@ -140,6 +141,10 @@ setup_sudo() {
 
 set_shell() {
   chsh --shell /usr/bin/zsh "$TARGET_USER"
+}
+
+install_starship() {
+  curl -sS https://starship.rs/install.sh | sh
 }
 
 install_physical() {
