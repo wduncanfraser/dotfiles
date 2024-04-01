@@ -40,7 +40,10 @@ esac
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
 
 # GNUPG
-export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+# TODO: Use gpg-agent for SSH on MacOS
+if ! [[ "$OSTYPE" =~ ^darwin ]]; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
 if [[ -o interactive ]]; then
   export GPG_TTY="$(tty)"
 fi

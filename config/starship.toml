@@ -10,3 +10,6 @@ show_milliseconds = true
 
 [directory]
 truncation_length = 8
+
+[gcloud]
+disabled = true
