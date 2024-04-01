@@ -76,6 +76,7 @@ base() {
     file \
     findutils \
     fuse3 \
+    fzf \
     gawk \
     g++-multilib \
     gcc-multilib \
