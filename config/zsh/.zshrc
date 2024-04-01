@@ -17,6 +17,9 @@ export BROWSER="firefox"
 # Firefox Configuration
 export MOZ_DBUS_REMOTE=1
 
+# Local bin
+export PATH="$PATH:$HOME/.local/bin"
+
 # Go Env
 export GOPATH="$HOME/dev/go"
 export PATH="$PATH:/usr/local/go/bin"
@@ -47,6 +50,11 @@ fi
 if [[ -o interactive ]]; then
   export GPG_TTY="$(tty)"
 fi
+
+# NVM
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # SDKMAN
 export SDKMAN_DIR="$HOME/.sdkman"
