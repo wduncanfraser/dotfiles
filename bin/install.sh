@@ -403,12 +403,8 @@ install_haskell() {
   curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 }
 
-install_node() {
-  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-
-  sudo apt install -y \
-    nodejs \
-    --no-install-recommends
+install_pnpm() {
+  curl -fsSL https://get.pnpm.io/install.sh | sh -
 }
 
 install_rust() {
@@ -515,7 +511,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="124.0.1"
+  firefox_version="124.0.2"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -575,7 +571,7 @@ usage() {
   echo "  dotnet                                  - install dotnet SDK"
   echo "  golang {version (optional)}             - install golang"
   echo "  haskell                                 - install haskell"
-  echo "  node                                    - install node"
+  echo "  pnpm                                    - install pnpm - node"
   echo "  rust                                    - install rust"
   echo "  sdkman                                  - install sdkman (jdk)"
   echo "(Editors)"
@@ -635,8 +631,8 @@ main() {
     "haskell")
       install_haskell
       ;;
-    "node")
-      install_node
+    "pnpm")
+      install_pnpm
       ;;
     "rust")
       install_rust

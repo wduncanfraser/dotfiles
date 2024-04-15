@@ -8,6 +8,9 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 
+-- Nerd font
+vim.g.have_nerd_font = true
+
 -- Cursor
 -- vim.opt.guicursor = 'i:block-blinkwait175-blinkoff150-blinkon175'
 

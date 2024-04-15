@@ -6,6 +6,7 @@ return {
       ensure_installed = {
         "bash",
         "c",
+        "css",
         "fish",
         "html",
         "javascript",
@@ -32,7 +33,10 @@ return {
         additional_vim_regex_highlighting = false,
       },
       indent = { enable = false },
-    }
+    },
+    config = function(_, opts)
+      require('nvim-treesitter.configs').setup(opts)
+    end,
   },
   {
     "nvim-treesitter/playground"
