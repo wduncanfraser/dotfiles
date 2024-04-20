@@ -511,7 +511,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="124.0.2"
+  firefox_version="125.0.1"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
