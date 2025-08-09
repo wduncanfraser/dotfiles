@@ -44,13 +44,13 @@ setup_debian_sources() {
     --no-install-recommends
 
   tee /etc/apt/sources.list << EOF
-deb https://deb.debian.org/debian/ bookworm main contrib non-free-firmware non-free
-deb-src https://deb.debian.org/debian/ bookworm main contrib non-free-firmware non-free
+deb https://deb.debian.org/debian/ trixie main contrib non-free-firmware non-free
+deb-src https://deb.debian.org/debian/ trixie main contrib non-free-firmware non-free
 
-deb https://security.debian.org/debian-security bookworm-security main contrib non-free-firmware non-free
-deb-src https://security.debian.org/debian-security bookworm-security main contrib non-free-firmware non-free
+deb https://security.debian.org/debian-security trixie-security main contrib non-free-firmware non-free
+deb-src https://security.debian.org/debian-security trixie-security main contrib non-free-firmware non-free
 
-deb https://deb.debian.org/debian/ bookworm-backports main contrib non-free-firmware non-free
+deb https://deb.debian.org/debian/ trixie-backports main contrib non-free-firmware non-free
 EOF
 }
 
@@ -288,7 +288,7 @@ install_wm() {
 }
 
 install_mpd() {
-  mpd_mpris_version="0.4.0-2"
+  mpd_mpris_version="0.4.1"
   mpd_mpris_path="/usr/local/bin/mpd-mpris"
 
   sudo apt update || true
