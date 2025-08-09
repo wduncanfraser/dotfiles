@@ -463,7 +463,7 @@ EOF
 }
 
 install_nvim() {
-  nvim_version="0.9.5"
+  nvim_version="0.11.3"
   nvim_path=/opt/nvim
   nvim_image=$nvim_path/nvim.appimage
 
@@ -474,7 +474,7 @@ install_nvim() {
 
   sudo mkdir -p $nvim_path
 
-  curl -fsSL "https://github.com/neovim/neovim/releases/download/v$nvim_version/nvim.appimage" | sudo dd of=$nvim_image
+  curl -fsSL "https://github.com/neovim/neovim/releases/download/v$nvim_version/nvim-linux-x86_64.appimage" | sudo dd of=$nvim_image
 
   sudo chmod +x $nvim_image
 
@@ -511,7 +511,7 @@ install_firefox() {
     --no-install-recommends
 
   firefox_path=/opt/firefox
-  firefox_version="125.0.1"
+  firefox_version="141.0.3"
 
   # if we are passing the version
   if [[ -n "$1" ]]; then
@@ -523,7 +523,7 @@ install_firefox() {
     sudo rm -rf "$firefox_path"
   fi
 
-  curl -fsSL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$firefox_version/linux-x86_64/en-US/firefox-$firefox_version.tar.bz2" | sudo tar -v -C /opt -xj
+  curl -fsSL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$firefox_version/linux-x86_64/en-US/firefox-$firefox_version.tar.xz" | sudo tar -v -C /opt -xJ
 
   sudo mkdir -p /usr/local/share/applications
   sudo tee /usr/local/share/applications/firefox-stable.desktop << EOF
