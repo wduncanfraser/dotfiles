@@ -22,6 +22,9 @@ vim.opt.colorcolumn = "100"
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
+-- Borders
+vim.o.winborder = 'rounded'
+
 -- Default tab settings
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
@@ -45,4 +48,3 @@ vim.opt.incsearch = true
 
 -- Update time
 vim.opt.updatetime = 250
-

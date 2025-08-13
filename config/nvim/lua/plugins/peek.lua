@@ -1,8 +1,6 @@
 local M = {
-  -- TODO: This should be 'toppair/peek.nvim'
-  -- Fix for plugin not building
-  'cloudsftp/peek.nvim',
-  branch = 'bundle',
+  'toppair/peek.nvim',
+  event = { "VeryLazy" },
   build = 'deno task --quiet build:fast',
   keys = {
     {
@@ -24,7 +22,9 @@ local M = {
 }
 
 function M.config()
-  require("peek").setup()
+  require("peek").setup({
+    app = 'browser',
+  })
   vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
   vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
 end

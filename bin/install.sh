@@ -64,6 +64,7 @@ base() {
     adduser \
     automake \
     bc \
+    bind9-dnsutils \
     build-essential \
     bzip2 \
     ca-certificates \
@@ -71,7 +72,6 @@ base() {
     cmake \
     curl \
     direnv \
-    dnsutils \
     fd-find \
     file \
     findutils \
@@ -150,7 +150,7 @@ install_starship() {
 
 install_physical() {
   local system=$1
-  local pkgs=( acpi firmware-linux fwupd fwupdate lm-sensors upower )
+  local pkgs=( acpi firmware-linux fwupd lm-sensors upower )
 
   case $system in
 		"amd")
@@ -215,6 +215,7 @@ install_wm() {
     brightness-udev \
     brightnessctl \
     clipman \
+    fastfetch \
     fonts-droid-fallback \
     fonts-font-awesome \
     fonts-hack \
@@ -237,7 +238,6 @@ install_wm() {
     gvfs-backends \
     imv \
     kanshi \
-    libayatana-appindicator1 \
     libayatana-appindicator3-1 \
     libgdk-pixbuf2.0-bin \
     libgtk-3-bin \
@@ -248,7 +248,6 @@ install_wm() {
     mako-notifier \
     mpv \
     nautilus \
-    neofetch \
     network-manager \
     network-manager-gnome \
     pinentry-gnome3 \
@@ -343,8 +342,7 @@ install_kubectl() {
 
 # Languages/SDKs
 install_deno() {
-  # TODO: Specific version needed for nvim peek plugin
-  curl -fsSL https://deno.land/install.sh | sh -s v1.33.1
+  curl -fsSL https://deno.land/install.sh | sh
 }
 
 install_dotnet() {
@@ -390,8 +388,8 @@ install_haskell() {
     libgmp-dev \
     libgmp10 \
     libncurses-dev \
-    libncurses5 \
-    libtinfo5 \
+    libncurses6 \
+    libtinfo6 \
     --no-install-recommends
 
   # Project deps (XZ, SHA1, etc)
@@ -486,7 +484,7 @@ install_nvim() {
 
   # Peek (Markdown preview)
   sudo apt install -y \
-    libwebkit2gtk-4.0-37 \
+    libwebkit2gtk-4.1-dev \
     --no-install-recommends
 }
 
