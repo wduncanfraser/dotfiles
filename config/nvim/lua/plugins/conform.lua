@@ -25,7 +25,8 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        javascript = { { "prettierd", "prettier" } },
+        rust = { 'rustfmt', lsp_format = 'fallback' },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
